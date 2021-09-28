@@ -1,3 +1,5 @@
+package project;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -15,12 +17,14 @@ import java.io.FileNotFoundException;
 
 public class GUI_Driver extends javax.swing.JFrame {
 
+    public static OS os;
     public boolean isPaused = true;
     
     /**
      * Creates new form GUI_Driver
      */
-    public GUI_Driver() {
+    public GUI_Driver(OS os) {
+        this.os = os;
         initComponents();
     }
 
@@ -166,6 +170,7 @@ public class GUI_Driver extends javax.swing.JFrame {
         if (isPaused) startPauseLabel.setText("System Running");
         else startPauseLabel.setText("System Paused");
         isPaused = !isPaused;
+        os.setIsPaused(isPaused);
     }//GEN-LAST:event_startPauseToggleButtonActionPerformed
 
     /**
@@ -198,7 +203,7 @@ public class GUI_Driver extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GUI_Driver().setVisible(true);
+                new GUI_Driver(os).setVisible(true);
             }
         });
         
