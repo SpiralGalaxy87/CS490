@@ -11,9 +11,15 @@ package project;
  */
 public class Main {
     
+    public OS os;
+    public GUI_Driver gui;
+    
     public static void main(String args[])
+    {}
+    
+    public Main()
     {
-        ProcessQueue pq1 = new ProcessQueue();
-        CPU cpu1 = new CPU(pq1);  
+        os = new OS(100);
+        gui = new GUI_Driver(os);
     }
 }
