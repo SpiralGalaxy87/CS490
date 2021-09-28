@@ -18,11 +18,12 @@ import static project.GUI_Driver.os;
 public class Main {
     
     public static OS os;
-    public GUI_Driver gui;
+    public static GUI_Driver gui;
     
     public static void main(String args[]) throws FileNotFoundException
     {    
         
+        // Functionality originally from GUI_Driver, moved to contain only one main function
          /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -46,10 +47,13 @@ public class Main {
         }
         //</editor-fold>
 
+        os = new OS(100);
+        gui = new GUI_Driver(os);
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GUI_Driver(os).setVisible(true);
+                gui.setVisible(true);
             }
         });
         /* Read in file to create processes and store in the ProcessQueue */
@@ -85,7 +89,7 @@ public class Main {
     
     public Main()
     {
-        os = new OS(100);
-        gui = new GUI_Driver(os);
+        System.out.println("Main class initialized");
+        
     }
 }
