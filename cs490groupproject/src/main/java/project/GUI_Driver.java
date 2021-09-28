@@ -6,8 +6,12 @@
 
 /**
  *
- * @author jmpet
+ * @author Jeni, Jake, Annaleise, Ben
  */
+
+import java.io.File;
+import java.util.Scanner;
+
 public class GUI_Driver extends javax.swing.JFrame {
 
     public boolean isPaused = true;
@@ -196,7 +200,18 @@ public class GUI_Driver extends javax.swing.JFrame {
                 new GUI_Driver().setVisible(true);
             }
         });
-    }
+        
+        
+        /* Read in file to create processes and store in the ProcessQueue */
+        // pass the path to the file as a parameter
+        File file =
+          new File("input.txt");
+        Scanner sc = new Scanner(file);
+
+        while (sc.hasNextLine())
+          System.out.println(sc.nextLine());
+
+        }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea cpu1_Status;
