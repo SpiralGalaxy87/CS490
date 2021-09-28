@@ -63,6 +63,7 @@ public class GUI_Driver extends javax.swing.JFrame {
             }
         ));
         waitingProcessQueueTable.getTableHeader().setReorderingAllowed(false);
+        waitingProcessQueueTable.setEnabled(false);
         jScrollPane1.setViewportView(waitingProcessQueueTable);
 
         waitingProcessQueueLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -79,10 +80,12 @@ public class GUI_Driver extends javax.swing.JFrame {
         cpu1_Status.setColumns(20);
         cpu1_Status.setRows(5);
         cpu1_Status.setWrapStyleWord(true);
+        cpu1_Status.setEnabled(false);
         jScrollPane2.setViewportView(cpu1_Status);
 
         jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField1.setText("1 Time Unit = 100 ms");
+        jTextField1.setEnabled(false);
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
@@ -91,6 +94,7 @@ public class GUI_Driver extends javax.swing.JFrame {
 
         systemReportArea.setColumns(20);
         systemReportArea.setRows(5);
+        systemReportArea.setEnabled(false);
         jScrollPane3.setViewportView(systemReportArea);
 
         systemReportLabel.setText("System Report Stats");
