@@ -5,7 +5,7 @@
  */
 package project;
 //import java.util.ArrayList;
-import java.util.ArrayDeque;
+import java.util.PriorityQueue;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -14,10 +14,10 @@ import java.util.Iterator;
  * @author Annaleise, Jake
  */
 public class ProcessQueue {
-    private ArrayDeque<Process> processes;
+    private PriorityQueue<Process> processes;
 
     public ProcessQueue() {
-        processes = new ArrayDeque<Process>();
+        processes = new PriorityQueue<Process>();
     }
     /**
      * Constructs an empty array deque with an initial capacity sufficient to
@@ -25,7 +25,7 @@ public class ProcessQueue {
      **/
     public ProcessQueue(int numElements)
     {
-        processes = new ArrayDeque(numElements);
+        processes = new PriorityQueue(numElements);
     }
 
     /** Inserts the specified element at the tail of this queue. **/
@@ -67,11 +67,28 @@ public class ProcessQueue {
         return processes.remove(p);
     }
     
-    /** Returns a string representation of this collection. **/
-    public String toString()
+    /**
+     * Returns an array containing all of the elements in this queue, in proper
+     * sequence.
+     **/
+    public Object[] toArray()
     {
-        return "test";
-        //return processes.toString();
+        return processes.toArray();
+    }
+    
+    /** Returns a string representation of this collection. **/
+    public String display()
+    {
+        Object[] pArray = toArray();
+        String output = "";
+        
+        for(Object obj : pArray)
+        {
+            Process p = (Process) obj;
+            output += p.display();
+            output += "\n";
+        }
+        return output;
     }
     
 }
@@ -92,14 +109,7 @@ public class ProcessQueue {
 //
 //    
 //
-//    /**
-//     * Returns an array containing all of the elements in this queue, in proper
-//     * sequence.
-//     **/
-//    public Object[] toArray()
-//    {
-//        return arrayDeque.toArray();
-//    }
+
 //
 //    /**
 //     * Returns an array containing all of the elements in this queue, in proper
