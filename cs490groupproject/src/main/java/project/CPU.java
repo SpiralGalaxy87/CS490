@@ -16,7 +16,8 @@ public class CPU {
 
     public CPU(ProcessQueue readyQueue) {
         this.readyQueue = readyQueue;
-        this.curProcess = this.readyQueue.pop();
+
+        this.curProcess = this.readyQueue.dequeue();
         this.timeRemaining = this.curProcess.getServiceTime();
     }
     
