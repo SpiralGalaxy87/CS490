@@ -5,7 +5,7 @@
  */
 package project;
 //import java.util.ArrayList;
-import java.util.PriorityQueue;
+import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -14,10 +14,18 @@ import java.util.Iterator;
  * @author Annaleise, Jake
  */
 public class ProcessQueue {
-    private PriorityQueue<Process> processes;
+    private ArrayDeque<Process> processes;
 
     public ProcessQueue() {
-        processes = new PriorityQueue<Process>();
+        processes = new ArrayDeque<Process>();
+    }
+    /**
+     * Constructs an empty array deque with an initial capacity sufficient to
+     * hold the specified number of elements.
+     **/
+    public ProcessQueue(int numElements)
+    {
+        processes = new ArrayDeque(numElements);
     }
 
     /** Inserts the specified element at the tail of this queue. **/
@@ -62,7 +70,6 @@ public class ProcessQueue {
     /** Returns a string representation of this collection. **/
     public String toString()
     {
-        
         return "test";
         //return processes.toString();
     }
