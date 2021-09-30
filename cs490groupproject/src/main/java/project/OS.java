@@ -1,5 +1,7 @@
 package project;
 
+import java.util.*;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -14,20 +16,26 @@ public class OS {
     private int curTime;
     private ProcessQueue finishedProcesses;
     private int timeUnitLength;
-    private boolean isPlaying;
+    private boolean isPaused;
+    private ArrayList<CPU> cpuList = new ArrayList<>();
 
     public OS(int timeUnitLength) {
         
         this.timeUnitLength = timeUnitLength;
         
         //start out paused
-        this.isPlaying = false;
+        this.isPaused = false;
         
         //time starts at 0
         this.curTime = 0;
         
         //finihsed processes start out empty
         this.finishedProcesses = new ProcessQueue();
+    }
+    
+    public void addCPU(CPU cpu)
+    {
+        cpuList.add(cpu);
     }
     
     public void timeStep(){
@@ -38,8 +46,8 @@ public class OS {
         
     }
     
-    public void togglePlaying(){
-        isPlaying = !isPlaying;
+    public void setIsPaused(boolean isPaused){
+        this.isPaused = isPaused;
     }
     
     public double computeThrougput()
