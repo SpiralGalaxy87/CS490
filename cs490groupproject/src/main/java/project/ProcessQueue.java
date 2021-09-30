@@ -5,6 +5,7 @@
  */
 package project;
 //import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.PriorityQueue;
 import java.util.Collection;
 import java.util.Iterator;
@@ -80,6 +81,8 @@ public class ProcessQueue {
     public String display()
     {
         Object[] pArray = toArray();
+        Arrays.sort(pArray);
+
         String output = "";
         
         for(Object obj : pArray)
@@ -175,3 +178,5 @@ public class ProcessQueue {
 //    {
 //        return arrayDeque.peekLast();
 //    }
+//    }
+

@@ -25,7 +25,6 @@ public class OS {
         
         //start out paused
         this.isPaused = false;
-
         
         //time starts at 0
         this.curTime = 0;
@@ -34,7 +33,6 @@ public class OS {
         this.finishedProcesses = new ProcessQueue();
     }
     
-
     public void addCPU(CPU cpu)
     {
         cpuList.add(cpu);
