@@ -97,7 +97,6 @@ public class Main {
 
         CPU cpu = new CPU(queue);
         os.addCPU(cpu);
-        os.startCPUs();
     }
     
     public Main()

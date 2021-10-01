@@ -162,6 +162,12 @@ public class GUI_Driver extends javax.swing.JFrame {
         else startPauseLabel.setText("System Paused");
         isPaused = !isPaused;
         os.setIsPaused(isPaused);
+        if(isPaused){
+            os.stopCPUs();
+        }
+        else {
+            os.startCPUs();
+        }
     }//GEN-LAST:event_startPauseToggleButtonActionPerformed
 
     //Removed main function

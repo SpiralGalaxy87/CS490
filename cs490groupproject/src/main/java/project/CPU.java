@@ -28,7 +28,7 @@ public class CPU implements Runnable{
     }
     
     public void run(){
-        while(this.readyQueue.size() >= 0){
+        while(this.readyQueue.size() > 0){
 
             if(this.timeRemaining == 0){
                 this.curProcess = this.readyQueue.dequeue();
@@ -44,7 +44,8 @@ public class CPU implements Runnable{
                 } 
                 catch (InterruptedException ex) {
                 // TBD catch and deal with exception ere
-                System.out.println("Exception caught: " + ex);
+                    System.out.println("Exception caught: " + ex);
+                    return;
                 }
             }
             System.out.println(this.curProcess.getProcessID() + " finished");
