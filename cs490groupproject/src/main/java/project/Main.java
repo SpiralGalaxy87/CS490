@@ -13,7 +13,7 @@ package project;
 import java.io.File;
 import java.util.Scanner;
 import java.io.FileNotFoundException;
-//import static project.GUI_Driver.os;
+import static project.GUI_Driver.os;
 
 public class Main {
     
@@ -91,11 +91,9 @@ public class Main {
             
             //System.out.println(newProcess.display());
         }
-        
         //test
-        System.out.println(queue.display());
         
-        
+        System.out.print(queue.toString());
     }
     
     public Main()

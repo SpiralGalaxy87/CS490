@@ -5,8 +5,7 @@
  */
 package project;
 //import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.PriorityQueue;
+import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -15,10 +14,10 @@ import java.util.Iterator;
  * @author Annaleise, Jake
  */
 public class ProcessQueue {
-    private PriorityQueue<Process> processes;
+    private ArrayDeque<Process> processes;
 
     public ProcessQueue() {
-        processes = new PriorityQueue<Process>();
+        processes = new ArrayDeque<Process>();
     }
     /**
      * Constructs an empty array deque with an initial capacity sufficient to
@@ -26,7 +25,7 @@ public class ProcessQueue {
      **/
     public ProcessQueue(int numElements)
     {
-        processes = new PriorityQueue(numElements);
+        processes = new ArrayDeque(numElements);
     }
 
     /** Inserts the specified element at the tail of this queue. **/
@@ -68,29 +67,11 @@ public class ProcessQueue {
         return processes.remove(p);
     }
     
-    /**
-     * Returns an array containing all of the elements in this queue, in proper
-     * sequence.
-     **/
-    public Object[] toArray()
-    {
-        return processes.toArray();
-    }
-    
     /** Returns a string representation of this collection. **/
-    public String display()
+    public String toString()
     {
-        Object[] pArray = toArray();
-        Arrays.sort(pArray);
-        String output = "";
-        
-        for(Object obj : pArray)
-        {
-            Process p = (Process) obj;
-            output += p.display();
-            output += "\n";
-        }
-        return output;
+        return "test";
+        //return processes.toString();
     }
     
 }
@@ -111,7 +92,14 @@ public class ProcessQueue {
 //
 //    
 //
-
+//    /**
+//     * Returns an array containing all of the elements in this queue, in proper
+//     * sequence.
+//     **/
+//    public Object[] toArray()
+//    {
+//        return arrayDeque.toArray();
+//    }
 //
 //    /**
 //     * Returns an array containing all of the elements in this queue, in proper

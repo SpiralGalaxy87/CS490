@@ -9,8 +9,7 @@ package project;
  *
  * @author Annaleise
  */
-
-public class Process implements Comparable<Process> {
+public class Process {
     private int arrivalTime;
     private String processID;
     private int serviceTime;
@@ -56,42 +55,6 @@ public class Process implements Comparable<Process> {
     }
     
     public String display(){
-        return processID + " Priority: " + priority + ". Arrived at: " + arrivalTime;
-        //return processID + " arrived at time: " + arrivalTime + " and will execute for: " + serviceTime + " time units. ";
-    }
-    
-    // Compare Two Processes based on their priority
-    /**
-     * @param   other - The Employee to be compared.
-     * @return  A negative integer, zero, or a positive integer as this employee
-     *          is less than, equal to, or greater than the supplied employee object.
-    */
-    @Override
-    public int compareTo(Process other) {
-        int returnVal;
-        if (this.priority < other.getPriority())
-        {
-            returnVal = -1;
-        }
-        else if (this.priority > other.getPriority())
-        {
-            returnVal = 1;
-        }
-        else
-        {
-            if (this.arrivalTime < other.getArrivalTime())
-            {
-                returnVal = -1;
-            }
-            else if (this.arrivalTime > other.getArrivalTime())
-            {
-                returnVal = 1;
-            }
-            else
-            {
-                returnVal = 0;
-            }
-        }
-        return returnVal;
+        return processID + " arrived at time: " + arrivalTime + " and will execute for: " + serviceTime + " time units. ";
     }
 }
