@@ -15,7 +15,7 @@ import java.util.Iterator;
  * @author Annaleise, Jake
  */
 public class ProcessQueue {
-    private PriorityQueue<Process> processes;
+    public PriorityQueue<Process> processes;
 
     public ProcessQueue() {
         processes = new PriorityQueue<Process>();
@@ -177,3 +177,5 @@ public class ProcessQueue {
 //    {
 //        return arrayDeque.peekLast();
 //    }
+//    }
+

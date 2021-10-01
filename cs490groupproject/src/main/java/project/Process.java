@@ -54,7 +54,7 @@ public class Process implements Comparable<Process> {
     public void setPriority(int priority) {
         this.priority = priority;
     }
-    
+
     public String display(){
         return processID + " Priority: " + priority + ". Arrived at: " + arrivalTime;
         //return processID + " arrived at time: " + arrivalTime + " and will execute for: " + serviceTime + " time units. ";
