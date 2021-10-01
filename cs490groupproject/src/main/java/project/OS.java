@@ -37,6 +37,9 @@ public class OS {
     public void setTimeUnitLength(int length)
     {
         this.timeUnitLength = length;
+        for (CPU i : cpuList) {
+            i.setTimeUnitLength(length);
+        }
     }
     
     public void addCPU(CPU cpu)
