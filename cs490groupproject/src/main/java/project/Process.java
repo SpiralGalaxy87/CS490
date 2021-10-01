@@ -56,17 +56,42 @@ public class Process implements Comparable<Process> {
     }
     
     public String display(){
-        return processID + " arrived at time: " + arrivalTime + " and will execute for: " + serviceTime + " time units. ";
+        return processID + " Priority: " + priority + ". Arrived at: " + arrivalTime;
+        //return processID + " arrived at time: " + arrivalTime + " and will execute for: " + serviceTime + " time units. ";
     }
     
     // Compare Two Processes based on their priority
     /**
-     * @param   anotherProcess - The Employee to be compared.
+     * @param   other - The Employee to be compared.
      * @return  A negative integer, zero, or a positive integer as this employee
      *          is less than, equal to, or greater than the supplied employee object.
     */
     @Override
-    public int compareTo(Process anotherProcess) {
-        return this.priority - anotherProcess.getPriority();
+    public int compareTo(Process other) {
+        int returnVal;
+        if (this.priority < other.getPriority())
+        {
+            returnVal = -1;
+        }
+        else if (this.priority > other.getPriority())
+        {
+            returnVal = 1;
+        }
+        else
+        {
+            if (this.arrivalTime < other.getArrivalTime())
+            {
+                returnVal = -1;
+            }
+            else if (this.arrivalTime > other.getArrivalTime())
+            {
+                returnVal = 1;
+            }
+            else
+            {
+                returnVal = 0;
+            }
+        }
+        return returnVal;
     }
 }

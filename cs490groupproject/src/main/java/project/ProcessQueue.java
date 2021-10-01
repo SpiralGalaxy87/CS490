@@ -5,6 +5,7 @@
  */
 package project;
 //import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.PriorityQueue;
 import java.util.Collection;
 import java.util.Iterator;
@@ -14,7 +15,7 @@ import java.util.Iterator;
  * @author Annaleise, Jake
  */
 public class ProcessQueue {
-    private PriorityQueue<Process> processes;
+    public PriorityQueue<Process> processes;
 
     public ProcessQueue() {
         processes = new PriorityQueue<Process>();
@@ -80,6 +81,7 @@ public class ProcessQueue {
     public String display()
     {
         Object[] pArray = toArray();
+        Arrays.sort(pArray);
         String output = "";
         
         for(Object obj : pArray)
