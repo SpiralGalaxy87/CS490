@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * @author Annaleise
  */
 public class ProcessQueue {
-    private ArrayList<Process> processes;
+    public ArrayList<Process> processes;
 
     public ProcessQueue() {
         processes = new ArrayList<Process>();

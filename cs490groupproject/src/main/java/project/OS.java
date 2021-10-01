@@ -42,15 +42,28 @@ public class OS {
         
     }
     
-    public void displayStatus(){
+    public String displayStatus(){
+        String status = "Completed Processes:\n";
+        if (finishedProcesses.processes != null)
+        {
+            for (Process process : finishedProcesses.processes)
+            {
+                status += "Process " + process.getProcessID() + "\n";
+            }
+        }
+        else
+            status += "N/A\n";
+        status += "Current throughput = " + computeThroughput() + "\n";
+        status += "Current time = " + curTime + " units";
         
+        return status;
     }
     
     public void setIsPaused(boolean isPaused){
         this.isPaused = isPaused;
     }
     
-    public double computeThrougput()
+    public double computeThroughput()
     {
         return 0.0;
     }
