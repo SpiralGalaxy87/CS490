@@ -95,6 +95,20 @@ public class Main {
         //test
         System.out.println(queue.display());
         
+    
+        CPU cpu = new CPU(queue);
+        Thread t = new Thread(cpu);    // add this cpu object to a thread and start the thread
+        t.start();
+
+        System.out.println("Started the thread");
+        // without the join, either thread can complete before the other
+        try {
+            t.join();  // wait for my thread to complete
+        } catch (Exception e) {
+            // TO DO handle system error here
+        }
+        System.out.println("Main program exiting");
+   
         
     }
     

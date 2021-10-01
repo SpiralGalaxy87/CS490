@@ -9,7 +9,7 @@ package project;
  *
  * @author Annaleise
  */
-public class CPU {
+public class CPU implements Runnable{
     private ProcessQueue readyQueue;
     private Process curProcess;
     private int timeRemaining;
@@ -24,8 +24,19 @@ public class CPU {
         
     }
     
-    public void runProcess(){
-        
+    public void run(){
+
+
+        System.out.println("  ...  cpu thread starting wait for " + this.curProcess.getServiceTime());
+        try {
+            
+            Thread.sleep((long)(this.curProcess.getServiceTime() * 1000));  // sleepN needs to be converted to milliseconds
+        } catch (InterruptedException ex) {
+            // TBD catch and deal with exception ere
+           System.out.println("Exception caught: " + ex);
+
+        }
+        System.out.println("  ...  ...  Slumber thread has woken up ");
     }
     
 }
