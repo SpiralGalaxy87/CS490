@@ -7,7 +7,7 @@ package project;
 
 /**
  *
- * @author Annaleise
+ * @author Annaleise, Jake
  */
 public class CPU implements Runnable{
     private ProcessQueue readyQueue;
@@ -22,7 +22,10 @@ public class CPU implements Runnable{
         this.timeRemaining = 0;
         this.timeUnitLength = 1000; //time unit length in ms
     }
-    
+    public void setTimeUnitLength(int length)
+    {
+        this.timeUnitLength = length;
+    }
     public String displayStatus()
     {
         String status = ("CPU " + key) + "\n";

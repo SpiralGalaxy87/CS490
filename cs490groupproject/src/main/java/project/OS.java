@@ -34,6 +34,11 @@ public class OS {
         this.finishedProcesses = new ProcessQueue();
     }
     
+    public void setTimeUnitLength(int length)
+    {
+        this.timeUnitLength = length;
+    }
+    
     public void addCPU(CPU cpu)
     {
         cpuList.add(cpu);

@@ -94,11 +94,6 @@ public class GUI_Driver extends javax.swing.JFrame {
         jLabel1.setText("ms");
 
         var_time.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
-        var_time.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                var_timeActionPerformed(evt);
-            }
-        });
         var_time.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 var_timePropertyChange(evt);
@@ -178,14 +173,11 @@ public class GUI_Driver extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_startPauseToggleButtonActionPerformed
 
-    private void var_timeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_var_timeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_var_timeActionPerformed
-
     private void var_timePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_var_timePropertyChange
         Object source = evt.getSource();
         if (source == var_time) {
             int num = (Integer)(var_time.getValue());
+            os.setTimeUnitLength(num);
         }
     }//GEN-LAST:event_var_timePropertyChange
 

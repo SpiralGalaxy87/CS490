@@ -49,16 +49,10 @@ public class Main {
 
         os = new OS(100);
         gui = new GUI_Driver(os);
-        ProcessQueue queue = new ProcessQueue();
+        ProcessQueue queue1 = new ProcessQueue();
         
         gui.setVisible(true);
         
-//        /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                
-//            }
-//        });
         /* Read in file to create processes and store in the ProcessQueue */
         // pass the path to the file as a parameter, create scanner
         File inFile = new File("input.txt");
@@ -68,35 +62,25 @@ public class Main {
         {
             String line = sc.nextLine();
             //System.out.println(line);
-            
             Scanner lineSc = new Scanner(line).useDelimiter("\\s*,\\s");
-            
             //arrival time
             int arrivalTime = lineSc.nextInt();
-            
             //process id
             String processID = lineSc.next();
-            
             //service time
             int serviceTime = lineSc.nextInt();
-            
             //priority
             int priority = lineSc.nextInt();
             
             Process newProcess = new Process(arrivalTime, processID, serviceTime, priority);
-            
-            
-            
-            queue.enqueue(newProcess);
-            
-            //System.out.println(newProcess.display());
+            queue1.enqueue(newProcess);
         }
         
         //test
-        System.out.println(queue.display());
+        System.out.println(queue1.display());
 
-        CPU cpu = new CPU(queue);
-        os.addCPU(cpu);
+        CPU cpu1 = new CPU(queue1);
+        os.addCPU(cpu1);
     }
     
     public Main()
