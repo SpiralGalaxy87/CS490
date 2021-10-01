@@ -17,6 +17,9 @@ public class CPU implements Runnable{
 
     public CPU(ProcessQueue readyQueue) {
         this.readyQueue = readyQueue;
+        //this.curProcess = this.readyQueue.dequeue();
+        //this.timeRemaining = this.curProcess.getServiceTime();
+        this.timeRemaining = 0;
         this.timeUnitLength = 1000; //time unit length in ms
     }
     
@@ -25,13 +28,16 @@ public class CPU implements Runnable{
     }
     
     public void run(){
-        while(this.readyQueue.size() > 0){
-            this.curProcess = this.readyQueue.dequeue();
-            this.timeRemaining = this.curProcess.getServiceTime(); 
+        while(this.readyQueue.size() >= 0){
+
+            if(this.timeRemaining == 0){
+                this.curProcess = this.readyQueue.dequeue();
+                this.timeRemaining = this.curProcess.getServiceTime();
+            }   
+           
             System.out.println("  ...  cpu thread starting " + this.curProcess.getProcessID() + ", working for " + this.curProcess.getServiceTime() + " time units.");
 
             while(this.timeRemaining > 0){
-
                 try {
                     Thread.sleep((long)(this.timeUnitLength));
                     this.timeRemaining--;
@@ -42,9 +48,9 @@ public class CPU implements Runnable{
                 }
             }
             System.out.println(this.curProcess.getProcessID() + " finished");
-        }
 
-        
+            this.curProcess = this.readyQueue.dequeue();
+            this.timeRemaining = this.curProcess.getServiceTime();
+        }
     }
-    
 }
