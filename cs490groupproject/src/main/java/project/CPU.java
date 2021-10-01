@@ -13,11 +13,11 @@ public class CPU implements Runnable{
     private ProcessQueue readyQueue;
     private Process curProcess;
     private int timeRemaining;
+    private int timeUnitLength;
 
     public CPU(ProcessQueue readyQueue) {
         this.readyQueue = readyQueue;
-        this.curProcess = this.readyQueue.dequeue();
-        this.timeRemaining = this.curProcess.getServiceTime();
+        this.timeUnitLength = 1000; //time unit length in ms
     }
     
     public void displayStatus(){
@@ -25,18 +25,26 @@ public class CPU implements Runnable{
     }
     
     public void run(){
+        while(this.readyQueue.size() > 0){
+            this.curProcess = this.readyQueue.dequeue();
+            this.timeRemaining = this.curProcess.getServiceTime(); 
+            System.out.println("  ...  cpu thread starting " + this.curProcess.getProcessID() + ", working for " + this.curProcess.getServiceTime() + " time units.");
 
+            while(this.timeRemaining > 0){
 
-        System.out.println("  ...  cpu thread starting wait for " + this.curProcess.getServiceTime());
-        try {
-            
-            Thread.sleep((long)(this.curProcess.getServiceTime() * 1000));  // sleepN needs to be converted to milliseconds
-        } catch (InterruptedException ex) {
-            // TBD catch and deal with exception ere
-           System.out.println("Exception caught: " + ex);
-
+                try {
+                    Thread.sleep((long)(this.timeUnitLength));
+                    this.timeRemaining--;
+                } 
+                catch (InterruptedException ex) {
+                // TBD catch and deal with exception ere
+                System.out.println("Exception caught: " + ex);
+                }
+            }
+            System.out.println(this.curProcess.getProcessID() + " finished");
         }
-        System.out.println("  ...  ...  Slumber thread has woken up ");
+
+        
     }
     
 }
