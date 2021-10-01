@@ -40,7 +40,7 @@ public class CPU implements Runnable{
         }        
         return status;
     }
-    
+
     public void run(){
         while(this.readyQueue.size() > 0){
 
@@ -49,7 +49,7 @@ public class CPU implements Runnable{
                 this.timeRemaining = this.curProcess.getServiceTime();
             }   
            
-            System.out.println("  ...  cpu thread starting " + this.curProcess.getProcessID() + ", working for " + this.curProcess.getServiceTime() + " time units.");
+            System.out.println("  ...  cpu thread starting " + this.curProcess.getProcessID() + ", working for " + this.timeRemaining + " time units.");
 
             while(this.timeRemaining > 0){
                 try {
@@ -58,14 +58,11 @@ public class CPU implements Runnable{
                 } 
                 catch (InterruptedException ex) {
                 // TBD catch and deal with exception ere
-                    System.out.println("Exception caught: " + ex);
+                    System.out.println("Exception caught: " + ex + " with " + this.timeRemaining + " time remaining");
                     return;
                 }
             }
             System.out.println(this.curProcess.getProcessID() + " finished");
-
-            this.curProcess = this.readyQueue.dequeue();
-            this.timeRemaining = this.curProcess.getServiceTime();
         }
     }
 }
