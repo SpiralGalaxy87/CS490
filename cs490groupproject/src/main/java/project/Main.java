@@ -94,8 +94,9 @@ public class Main {
         
         //test
         System.out.println(queue.display());
-        
-        
+
+        CPU cpu = new CPU(queue);
+        os.addCPU(cpu);
     }
     
     public Main()

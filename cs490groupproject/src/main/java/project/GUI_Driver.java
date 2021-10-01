@@ -170,6 +170,12 @@ public class GUI_Driver extends javax.swing.JFrame {
         else lbl_pause_play.setText("System Paused");
         isPaused = !isPaused;
         os.setIsPaused(isPaused);
+        if(isPaused){
+            os.stopCPUs();
+        }
+        else {
+            os.startCPUs();
+        }
     }//GEN-LAST:event_startPauseToggleButtonActionPerformed
 
     private void var_timeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_var_timeActionPerformed
