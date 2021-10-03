@@ -210,10 +210,17 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
     private javax.swing.JTable waitingProcessQueueTable;
     // End of variables declaration//GEN-END:variables
 
+
+    /**
+    * Actions that need to be performed at each timestep, including updating all info displays.  
+    */ 
     private void timeStep(){
         cpu1_Status.setText(this.os.getCPUList().get(0).displayStatus());
     }
 
+    /**
+    * Starts thread for GUI Updates when the system starts playing.
+    */
     public void startGUIUpdater()
     {
         Thread t = new Thread(this);    // add start thread for gui updates
@@ -222,11 +229,17 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
         System.out.println("Started the GUI Updater thread");
     }
 
+    /**
+    * Interrupt GUI Updater Thread when the system pauses;
+    */
     public void stopGUIUpdater()
     {
         this.guiUpdateThread.interrupt();
     }   
-
+     
+    /**
+    * Run timeStep updates once every time step.
+    */
     public void run(){
         System.out.println("  ...  GIU updater thread starting ");
 
