@@ -33,7 +33,7 @@ public class GUI_Driver extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        startPauseToggleButton = new javax.swing.JToggleButton();
+        button_startPause = new javax.swing.JToggleButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         waitingProcessQueueTable = new javax.swing.JTable();
         waitingProcessQueueLabel = new javax.swing.JLabel();
@@ -46,13 +46,14 @@ public class GUI_Driver extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         var_time = new javax.swing.JFormattedTextField();
         lbl_pause_play = new javax.swing.JLabel();
+        button_timeunit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        startPauseToggleButton.setText("Start/Pause");
-        startPauseToggleButton.addActionListener(new java.awt.event.ActionListener() {
+        button_startPause.setText("Start/Pause");
+        button_startPause.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                startPauseToggleButtonActionPerformed(evt);
+                button_startPauseActionPerformed(evt);
             }
         });
 
@@ -94,13 +95,15 @@ public class GUI_Driver extends javax.swing.JFrame {
         jLabel1.setText("ms");
 
         var_time.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
-        var_time.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                var_timePropertyChange(evt);
-            }
-        });
 
         lbl_pause_play.setText("System Paused");
+
+        button_timeunit.setText("Update");
+        button_timeunit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button_timeunitActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -109,11 +112,12 @@ public class GUI_Driver extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(70, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(systemReportLabel)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                             .addComponent(waitingProcessQueueLabel)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(startPauseToggleButton, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(button_startPause, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(60, 60, 60)
@@ -124,12 +128,13 @@ public class GUI_Driver extends javax.swing.JFrame {
                                         .addGap(3, 3, 3)
                                         .addComponent(var_time, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel1))))
+                                        .addComponent(jLabel1)
+                                        .addGap(6, 6, 6)
+                                        .addComponent(button_timeunit))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(112, 112, 112)
                                 .addComponent(lbl_pause_play))))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 491, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(systemReportLabel))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 491, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(70, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -137,15 +142,16 @@ public class GUI_Driver extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(startPauseToggleButton)
+                    .addComponent(button_startPause)
                     .addComponent(lbl_pause_play))
-                .addGap(50, 50, 50)
+                .addGap(49, 49, 49)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(waitingProcessQueueLabel)
                     .addComponent(lbl_timeUnit)
                     .addComponent(jLabel1)
-                    .addComponent(var_time, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20)
+                    .addComponent(var_time, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(button_timeunit))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -159,7 +165,7 @@ public class GUI_Driver extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void startPauseToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startPauseToggleButtonActionPerformed
+    private void button_startPauseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_startPauseActionPerformed
         // TODO add your handling code here:
         if (isPaused) lbl_pause_play.setText("System Running");
         else lbl_pause_play.setText("System Paused");
@@ -171,20 +177,19 @@ public class GUI_Driver extends javax.swing.JFrame {
         else {
             os.startCPUs();
         }
-    }//GEN-LAST:event_startPauseToggleButtonActionPerformed
+    }//GEN-LAST:event_button_startPauseActionPerformed
 
-    private void var_timePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_var_timePropertyChange
-        Object source = evt.getSource();
-        if (source == var_time) {
-            int num = (Integer)(var_time.getValue());
-            os.setTimeUnitLength(num);
-        }
-    }//GEN-LAST:event_var_timePropertyChange
+    private void button_timeunitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_timeunitActionPerformed
+        int num = ((Number)(var_time.getValue())).intValue();
+        os.setTimeUnitLength(num);
+    }//GEN-LAST:event_button_timeunitActionPerformed
 
     //Removed main function
     //All main functionality in Main class
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JToggleButton button_startPause;
+    private javax.swing.JButton button_timeunit;
     private javax.swing.JTextArea cpu1_Status;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
@@ -192,7 +197,6 @@ public class GUI_Driver extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel lbl_pause_play;
     private javax.swing.JLabel lbl_timeUnit;
-    private javax.swing.JToggleButton startPauseToggleButton;
     private javax.swing.JTextArea systemReportArea;
     private javax.swing.JLabel systemReportLabel;
     private javax.swing.JFormattedTextField var_time;

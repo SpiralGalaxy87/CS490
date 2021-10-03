@@ -14,7 +14,8 @@ public class CPU implements Runnable{
     private Process curProcess;
     private int timeRemaining;
     private int timeUnitLength;
-
+    public static int key = 1;
+    
     public CPU(ProcessQueue readyQueue) {
         this.readyQueue = readyQueue;
         //this.curProcess = this.readyQueue.dequeue();
