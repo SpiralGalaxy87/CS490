@@ -48,9 +48,10 @@ public class Main {
         //</editor-fold>
 
         os = new OS(100);
-        gui = new GUI_Driver(os);
+        gui = new GUI_Driver(os, 100);
         ProcessQueue queue1 = new ProcessQueue();
-        
+
+
         gui.setVisible(true);
         
         /* Read in file to create processes and store in the ProcessQueue */
@@ -86,6 +87,5 @@ public class Main {
     public Main()
     {
         System.out.println("Main class initialized");
-        
     }
 }

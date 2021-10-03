@@ -72,7 +72,7 @@ public class OS {
     }   
 
     public void timeStep(){
-        
+       
     }
     
     public String displayStatus(){
@@ -103,5 +103,9 @@ public class OS {
     
     public void importProcesses(String filename){
     
+    }
+
+    public ArrayList<CPU> getCPUList(){
+        return this.cpuList;
     }
 }

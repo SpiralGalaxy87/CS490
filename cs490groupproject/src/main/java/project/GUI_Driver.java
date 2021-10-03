@@ -11,16 +11,19 @@ import javax.swing.*;
  * and open the template in the editor.
  */
 
-public class GUI_Driver extends javax.swing.JFrame {
+public class GUI_Driver extends javax.swing.JFrame implements Runnable {
 
     public static OS os;
     public boolean isPaused = true;
+    private int timeUnitLength;
+    private Thread guiUpdateThread;
     
     /**
      * Creates new form GUI_Driver
      */
-    public GUI_Driver(OS os) {
+    public GUI_Driver(OS os, int length) {
         this.os = os;
+        this.timeUnitLength = length;
         initComponents();
     }
 
@@ -173,15 +176,18 @@ public class GUI_Driver extends javax.swing.JFrame {
         os.setIsPaused(isPaused);
         if(isPaused){
             os.stopCPUs();
+            this.stopGUIUpdater();
         }
         else {
             os.startCPUs();
+            this.startGUIUpdater();
         }
     }//GEN-LAST:event_button_startPauseActionPerformed
 
     private void button_timeunitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_timeunitActionPerformed
         int num = ((Number)(var_time.getValue())).intValue();
         os.setTimeUnitLength(num);
+        this.timeUnitLength = num;
     }//GEN-LAST:event_button_timeunitActionPerformed
 
     //Removed main function
@@ -203,4 +209,38 @@ public class GUI_Driver extends javax.swing.JFrame {
     private javax.swing.JLabel waitingProcessQueueLabel;
     private javax.swing.JTable waitingProcessQueueTable;
     // End of variables declaration//GEN-END:variables
-}
+
+    private void timeStep(){
+        cpu1_Status.setText(this.os.getCPUList().get(0).displayStatus());
+    }
+
+    public void startGUIUpdater()
+    {
+        Thread t = new Thread(this);    // add start thread for gui updates
+        this.guiUpdateThread = t;
+        t.start();
+        System.out.println("Started the GUI Updater thread");
+    }
+
+    public void stopGUIUpdater()
+    {
+        this.guiUpdateThread.interrupt();
+    }   
+
+    public void run(){
+        System.out.println("  ...  GIU updater thread starting ");
+
+        while(true){
+            this.timeStep();
+            try {
+                Thread.sleep((long)(this.timeUnitLength));
+            } 
+            catch (InterruptedException ex) {
+            // TBD catch and deal with exception ere
+                System.out.println("GUI Driver Exception caught: " + ex);
+                this.timeStep();
+                return;
+            }
+        }
+    }
+}   
