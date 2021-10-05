@@ -77,7 +77,18 @@ public class OS {
     public void timeStep(){
        
     }
-    
+    public String displayQueueState() {
+        
+        String state = "";
+        for (Process p : readyQueue.processes)
+        {
+            state += p.getProcessID();
+            state += "\t";
+            state += p.getServiceTime();
+            state += "\n";
+        }  
+        return state;
+    }
     public String displayStatus(){
         String status = "Completed Processes:\n";
         if (finishedProcesses.processes != null)

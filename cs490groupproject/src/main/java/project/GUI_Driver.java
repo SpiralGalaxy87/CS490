@@ -37,13 +37,11 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
     private void initComponents() {
 
         button_startPause = new javax.swing.JToggleButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        waitingProcessQueueTable = new javax.swing.JTable();
         waitingProcessQueueLabel = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         cpu1_Status = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
-        systemReportArea = new javax.swing.JTextArea();
+        table_report = new javax.swing.JTextArea();
         systemReportLabel = new javax.swing.JLabel();
         lbl_timeUnit = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -54,6 +52,10 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
         lbl_cpu2 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
         cpu2_Status = new javax.swing.JTextArea();
+        lbl_processName = new javax.swing.JLabel();
+        lbl_serviceTime = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        table_readyQueue = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -63,23 +65,6 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
                 button_startPauseActionPerformed(evt);
             }
         });
-
-        waitingProcessQueueTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
-            },
-            new String [] {
-                "Process Name", "Service Time"
-            }
-        ));
-        waitingProcessQueueTable.getTableHeader().setReorderingAllowed(false);
-        waitingProcessQueueTable.setEnabled(false);
-        jScrollPane1.setViewportView(waitingProcessQueueTable);
 
         waitingProcessQueueLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         waitingProcessQueueLabel.setText("OS Ready Queue");
@@ -94,11 +79,11 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
         //cpu1_Status.setEnabled(false);
         jScrollPane2.setViewportView(cpu1_Status);
 
-        systemReportArea.setEditable(false);
-        systemReportArea.setColumns(20);
-        systemReportArea.setRows(5);
-        systemReportArea.setEnabled(false);
-        jScrollPane3.setViewportView(systemReportArea);
+        table_report.setEditable(false);
+        table_report.setColumns(20);
+        table_report.setRows(5);
+        table_report.setEnabled(false);
+        jScrollPane3.setViewportView(table_report);
 
         systemReportLabel.setText("System Report Stats");
 
@@ -133,6 +118,19 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
         cpu2_Status.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jScrollPane5.setViewportView(cpu2_Status);
 
+        lbl_processName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_processName.setText("Process Name");
+
+        lbl_serviceTime.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_serviceTime.setText("Service Time");
+        lbl_serviceTime.setMaximumSize(new java.awt.Dimension(70, 14));
+        lbl_serviceTime.setMinimumSize(new java.awt.Dimension(70, 14));
+
+        table_readyQueue.setEditable(false);
+        table_readyQueue.setColumns(20);
+        table_readyQueue.setRows(5);
+        jScrollPane4.setViewportView(table_readyQueue);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -144,8 +142,12 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                             .addComponent(waitingProcessQueueLabel)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(button_startPause, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(button_startPause, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(lbl_processName, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lbl_serviceTime, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(26, 26, 26)
@@ -170,7 +172,7 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
                                 .addGap(112, 112, 112)
                                 .addComponent(lbl_pause_play))))
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 443, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(47, 47, Short.MAX_VALUE))
+                .addGap(114, 200, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -189,16 +191,20 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(27, 27, 27)
                                 .addComponent(lbl_cpu1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(lbl_cpu2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(52, 52, 52)))
+                                .addGap(52, 52, 52))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lbl_processName, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lbl_serviceTime, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane4)
+                                .addGap(23, 23, 23)))
                         .addComponent(systemReportLabel)
                         .addGap(20, 20, 20))
                     .addGroup(layout.createSequentialGroup()
@@ -244,19 +250,21 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
     private javax.swing.JTextArea cpu1_Status;
     private javax.swing.JTextArea cpu2_Status;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JLabel lbl_cpu1;
     private javax.swing.JLabel lbl_cpu2;
     private javax.swing.JLabel lbl_pause_play;
+    private javax.swing.JLabel lbl_processName;
+    private javax.swing.JLabel lbl_serviceTime;
     private javax.swing.JLabel lbl_timeUnit;
-    private javax.swing.JTextArea systemReportArea;
     private javax.swing.JLabel systemReportLabel;
+    private javax.swing.JTextArea table_readyQueue;
+    private javax.swing.JTextArea table_report;
     private javax.swing.JFormattedTextField var_time;
     private javax.swing.JLabel waitingProcessQueueLabel;
-    private javax.swing.JTable waitingProcessQueueTable;
     // End of variables declaration//GEN-END:variables
 
 
@@ -266,6 +274,7 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
     private void timeStep(){
         cpu1_Status.setText(this.os.getCPUList().get(0).displayStatus());
         cpu2_Status.setText(this.os.getCPUList().get(1).displayStatus());
+        table_readyQueue.setText(this.os.displayQueueState());
     }
 
     /**
