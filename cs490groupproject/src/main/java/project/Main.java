@@ -48,7 +48,7 @@ public class Main {
         //</editor-fold>
 
         //ProcessQueue processQueue = new ProcessQueue();
-        os = new OS(500);
+        os = new OS(800);
         gui = new GUI_Driver(os);
         
 
@@ -82,8 +82,12 @@ public class Main {
         //System.out.println(queue1.display());
 
         CPU cpu1 = new CPU(1, os);
-        //CPU cpu2 = new CPU();
+        
+        CPU cpu2 = new CPU(2, os);
+        
         os.addCPU(cpu1);
+        
+        os.addCPU(cpu2);
     }
     
     public Main()

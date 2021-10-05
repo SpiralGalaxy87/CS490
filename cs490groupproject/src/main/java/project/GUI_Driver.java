@@ -53,7 +53,7 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
         lbl_cpu1 = new javax.swing.JLabel();
         lbl_cpu2 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        cpu2_Status = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -124,14 +124,14 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
         lbl_cpu2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lbl_cpu2.setText("CPU2");
 
-        jTextArea1.setEditable(false);
-        jTextArea1.setColumns(20);
-        jTextArea1.setLineWrap(true);
-        jTextArea1.setRows(5);
-        jTextArea1.setWrapStyleWord(true);
-        jTextArea1.setAutoscrolls(false);
-        jTextArea1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jScrollPane5.setViewportView(jTextArea1);
+        cpu2_Status.setEditable(false);
+        cpu2_Status.setColumns(20);
+        cpu2_Status.setLineWrap(true);
+        cpu2_Status.setRows(5);
+        cpu2_Status.setWrapStyleWord(true);
+        cpu2_Status.setAutoscrolls(false);
+        cpu2_Status.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jScrollPane5.setViewportView(cpu2_Status);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -242,12 +242,12 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
     private javax.swing.JToggleButton button_startPause;
     private javax.swing.JButton button_timeunit;
     private javax.swing.JTextArea cpu1_Status;
+    private javax.swing.JTextArea cpu2_Status;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel lbl_cpu1;
     private javax.swing.JLabel lbl_cpu2;
     private javax.swing.JLabel lbl_pause_play;
@@ -265,6 +265,7 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
     */ 
     private void timeStep(){
         cpu1_Status.setText(this.os.getCPUList().get(0).displayStatus());
+        cpu2_Status.setText(this.os.getCPUList().get(1).displayStatus());
     }
 
     /**

@@ -19,7 +19,8 @@ public class OS {
     private int timeUnitLength;
     private boolean isPaused;
     private ArrayList<CPU> cpuList = new ArrayList<>();
-    private Thread cpuThread; //later we can make this a list of cpuThreads
+    //private Thread cpuThread; //later we can make this a list of cpuThreads
+    private ArrayList<Thread> cpuThreadList = new ArrayList<>();
 
     public OS(int timeUnitLength) {
         
@@ -56,16 +57,21 @@ public class OS {
     {
         //this just starts the single CPU right now. 
         //later this should loop to start up threads for every CPU in cpuList
-        CPU cpu = cpuList.get(0);
-        Thread t = new Thread(cpu);    // add this cpu object to a thread and start the thread
-        this.cpuThread = t;
-        t.start();
-        System.out.println("Started the thread");
+        for (CPU cpu : cpuList) {
+            Thread t = new Thread(cpu);
+            this.cpuThreadList.add(t);
+            t.start();
+            System.out.println("Started thread for CPU " + cpu.getID());
+        }
     }
 
     public void stopCPUs()
     {
-        this.cpuThread.interrupt();
+        for (Thread t : cpuThreadList)
+        {
+            t.interrupt();
+        }
+        //this.cpuThread.interrupt();
     }   
 
     public void timeStep(){

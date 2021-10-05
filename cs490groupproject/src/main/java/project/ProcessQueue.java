@@ -38,6 +38,7 @@ public class ProcessQueue {
     /**
      * Retrieves and removes the head of this queue, or returns null if this
      * queue is empty.
+     * @return Process is the one removed.
      **/
     public Process dequeue()
     {
