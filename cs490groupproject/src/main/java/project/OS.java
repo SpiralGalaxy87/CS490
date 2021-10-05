@@ -14,6 +14,7 @@ import java.util.*;
  */
 public class OS {
     private int curTime;
+    public ProcessQueue readyQueue;
     private ProcessQueue finishedProcesses;
     private int timeUnitLength;
     private boolean isPaused;
@@ -31,15 +32,19 @@ public class OS {
         this.curTime = 0;
         
         //finihsed processes start out empty
+        this.readyQueue = new ProcessQueue();
         this.finishedProcesses = new ProcessQueue();
     }
     
     public void setTimeUnitLength(int length)
     {
         this.timeUnitLength = length;
-        for (CPU i : cpuList) {
-            i.setTimeUnitLength(length);
-        }
+        //for (CPU i : cpuList) {
+        //    i.setTimeUnitLength(length);
+        //}
+    }
+    public int getTimeUnitLength() {
+        return this.timeUnitLength;
     }
     
     public void addCPU(CPU cpu)

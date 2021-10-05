@@ -24,7 +24,7 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
-              <EmptySpace pref="70" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="70" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="systemReportLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
@@ -35,17 +35,27 @@
                       </Group>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="2" attributes="0">
-                                  <Component id="jScrollPane2" alignment="2" min="-2" max="-2" attributes="0"/>
-                                  <Group type="102" alignment="2" attributes="0">
+                              <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
                                       <Component id="lbl_timeUnit" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
                                       <Component id="var_time" min="-2" pref="51" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
                                       <Component id="button_timeunit" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" attributes="0">
+                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                          <Component id="jScrollPane2" pref="175" max="32767" attributes="0"/>
+                                          <Component id="jScrollPane5" pref="0" max="32767" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="lbl_cpu2" min="-2" pref="34" max="-2" attributes="0"/>
+                                          <Component id="lbl_cpu1" min="-2" pref="34" max="-2" attributes="0"/>
+                                      </Group>
                                   </Group>
                               </Group>
                           </Group>
@@ -55,9 +65,9 @@
                           </Group>
                       </Group>
                   </Group>
-                  <Component id="jScrollPane3" alignment="0" min="-2" pref="491" max="-2" attributes="0"/>
+                  <Component id="jScrollPane3" alignment="0" min="-2" pref="443" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="70" max="32767" attributes="0"/>
+              <EmptySpace min="114" pref="47" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -79,12 +89,30 @@
               </Group>
               <EmptySpace min="18" pref="18" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane1" min="-2" pref="125" max="-2" attributes="0"/>
-                  <Component id="jScrollPane2" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="jScrollPane1" min="-2" pref="125" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                              <Component id="lbl_cpu1" min="-2" pref="22" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="lbl_cpu2" min="-2" pref="22" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Component id="systemReportLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="jScrollPane2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
+                      <Component id="jScrollPane5" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="57" max="32767" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace pref="80" max="32767" attributes="0"/>
-              <Component id="systemReportLabel" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
               <Component id="jScrollPane3" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
           </Group>
@@ -144,7 +172,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="14" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Waiting Process Queue"/>
+        <Property name="text" type="java.lang.String" value="OS Ready Queue"/>
       </Properties>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane2">
@@ -156,12 +184,20 @@
       <SubComponents>
         <Component class="javax.swing.JTextArea" name="cpu1_Status">
           <Properties>
+            <Property name="editable" type="boolean" value="false"/>
             <Property name="columns" type="int" value="20"/>
+            <Property name="lineWrap" type="boolean" value="true"/>
             <Property name="rows" type="int" value="5"/>
             <Property name="wrapStyleWord" type="boolean" value="true"/>
+            <Property name="autoscrolls" type="boolean" value="false"/>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
+                <EtchetBorder/>
+              </Border>
+            </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="cpu1_Status.setEnabled(false);&#xd;&#xa;"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="//cpu1_Status.setEnabled(false);&#xd;&#xa;"/>
           </AuxValues>
         </Component>
       </SubComponents>
@@ -175,6 +211,7 @@
       <SubComponents>
         <Component class="javax.swing.JTextArea" name="systemReportArea">
           <Properties>
+            <Property name="editable" type="boolean" value="false"/>
             <Property name="columns" type="int" value="20"/>
             <Property name="rows" type="int" value="5"/>
           </Properties>
@@ -205,6 +242,9 @@
           <Format subtype="1" type="0"/>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="var_time.setValue(os.getTimeUnitLength());"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="lbl_pause_play">
       <Properties>
@@ -219,5 +259,45 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="button_timeunitActionPerformed"/>
       </Events>
     </Component>
+    <Component class="javax.swing.JLabel" name="lbl_cpu1">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="11" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="CPU1"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lbl_cpu2">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="11" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="CPU2"/>
+      </Properties>
+    </Component>
+    <Container class="javax.swing.JScrollPane" name="jScrollPane5">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTextArea" name="jTextArea1">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+            <Property name="columns" type="int" value="20"/>
+            <Property name="lineWrap" type="boolean" value="true"/>
+            <Property name="rows" type="int" value="5"/>
+            <Property name="wrapStyleWord" type="boolean" value="true"/>
+            <Property name="autoscrolls" type="boolean" value="false"/>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
+                <EtchetBorder/>
+              </Border>
+            </Property>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
   </SubComponents>
 </Form>

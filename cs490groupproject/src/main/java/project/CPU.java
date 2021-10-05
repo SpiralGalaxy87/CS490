@@ -10,26 +10,20 @@ package project;
  * @author Annaleise, Jake
  */
 public class CPU implements Runnable{
-    private ProcessQueue readyQueue;
+    private OS o;
+    //private ProcessQueue readyQueue;
     private Process curProcess;
     private int timeRemaining;
-    private int timeUnitLength;
-    public static int key = 1;
+    private int id;
     
-    public CPU(ProcessQueue readyQueue) {
-        this.readyQueue = readyQueue;
-        //this.curProcess = this.readyQueue.dequeue();
-        //this.timeRemaining = this.curProcess.getServiceTime();
+    public CPU(int id, OS o) {
+        this.id = id;
+        this.o = o;
         this.timeRemaining = 0;
-        this.timeUnitLength = 1000; //time unit length in ms
-    }
-    public void setTimeUnitLength(int length)
-    {
-        this.timeUnitLength = length;
     }
     public String displayStatus()
     {
-        String status = ("CPU " + key) + "\n";
+        String status = ("CPU " + id) + "\n";
         if (curProcess != null)
         {
             status += "Exec: Process " + curProcess.getProcessID() + "\n";
@@ -43,10 +37,10 @@ public class CPU implements Runnable{
     }
 
     public void run(){
-        while(this.readyQueue.size() > 0){
+        while(o.readyQueue.size() > 0){
 
             if(this.timeRemaining == 0){
-                this.curProcess = this.readyQueue.dequeue();
+                this.curProcess = o.readyQueue.dequeue();
                 this.timeRemaining = this.curProcess.getServiceTime();
             }   
            
@@ -54,7 +48,7 @@ public class CPU implements Runnable{
 
             while(this.timeRemaining > 0){
                 try {
-                    Thread.sleep((long)(this.timeUnitLength));
+                    Thread.sleep((long)(o.getTimeUnitLength()));
                     this.timeRemaining--;
                 } 
                 catch (InterruptedException ex) {

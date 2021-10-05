@@ -21,9 +21,9 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
     /**
      * Creates new form GUI_Driver
      */
-    public GUI_Driver(OS os, int length) {
+    public GUI_Driver(OS os) {
         this.os = os;
-        this.timeUnitLength = length;
+        //this.timeUnitLength = os.getTimeUnitLength();
         initComponents();
     }
 
@@ -50,6 +50,10 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
         var_time = new javax.swing.JFormattedTextField();
         lbl_pause_play = new javax.swing.JLabel();
         button_timeunit = new javax.swing.JButton();
+        lbl_cpu1 = new javax.swing.JLabel();
+        lbl_cpu2 = new javax.swing.JLabel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -78,14 +82,19 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
         jScrollPane1.setViewportView(waitingProcessQueueTable);
 
         waitingProcessQueueLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        waitingProcessQueueLabel.setText("Waiting Process Queue");
+        waitingProcessQueueLabel.setText("OS Ready Queue");
 
+        cpu1_Status.setEditable(false);
         cpu1_Status.setColumns(20);
+        cpu1_Status.setLineWrap(true);
         cpu1_Status.setRows(5);
         cpu1_Status.setWrapStyleWord(true);
-        cpu1_Status.setEnabled(false);
+        cpu1_Status.setAutoscrolls(false);
+        cpu1_Status.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        //cpu1_Status.setEnabled(false);
         jScrollPane2.setViewportView(cpu1_Status);
 
+        systemReportArea.setEditable(false);
         systemReportArea.setColumns(20);
         systemReportArea.setRows(5);
         systemReportArea.setEnabled(false);
@@ -98,6 +107,7 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
         jLabel1.setText("ms");
 
         var_time.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
+        var_time.setValue(os.getTimeUnitLength());
 
         lbl_pause_play.setText("System Paused");
 
@@ -108,12 +118,27 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
             }
         });
 
+        lbl_cpu1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lbl_cpu1.setText("CPU1");
+
+        lbl_cpu2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lbl_cpu2.setText("CPU2");
+
+        jTextArea1.setEditable(false);
+        jTextArea1.setColumns(20);
+        jTextArea1.setLineWrap(true);
+        jTextArea1.setRows(5);
+        jTextArea1.setWrapStyleWord(true);
+        jTextArea1.setAutoscrolls(false);
+        jTextArea1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jScrollPane5.setViewportView(jTextArea1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(70, Short.MAX_VALUE)
+                .addGap(70, 70, 70)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(systemReportLabel)
                     .addGroup(layout.createSequentialGroup()
@@ -123,22 +148,29 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
                             .addComponent(button_startPause, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(60, 60, 60)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(26, 26, 26)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(lbl_timeUnit)
-                                        .addGap(3, 3, 3)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(var_time, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jLabel1)
-                                        .addGap(6, 6, 6)
-                                        .addComponent(button_timeunit))))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(button_timeunit))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lbl_cpu2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(lbl_cpu1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(112, 112, 112)
                                 .addComponent(lbl_pause_play))))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 491, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(70, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 443, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(47, 47, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -156,11 +188,24 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
                     .addComponent(button_timeunit))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
-                .addComponent(systemReportLabel)
-                .addGap(20, 20, 20)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(27, 27, 27)
+                                .addComponent(lbl_cpu1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lbl_cpu2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(52, 52, 52)))
+                        .addComponent(systemReportLabel)
+                        .addGap(20, 20, 20))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(38, 38, 38)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)))
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(60, 60, 60))
         );
@@ -187,7 +232,7 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
     private void button_timeunitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_timeunitActionPerformed
         int num = ((Number)(var_time.getValue())).intValue();
         os.setTimeUnitLength(num);
-        this.timeUnitLength = num;
+        //this.timeUnitLength = os.getTimeUnitLength();
     }//GEN-LAST:event_button_timeunitActionPerformed
 
     //Removed main function
@@ -201,6 +246,10 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JLabel lbl_cpu1;
+    private javax.swing.JLabel lbl_cpu2;
     private javax.swing.JLabel lbl_pause_play;
     private javax.swing.JLabel lbl_timeUnit;
     private javax.swing.JTextArea systemReportArea;
@@ -246,7 +295,7 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
         while(true){
             this.timeStep();
             try {
-                Thread.sleep((long)(this.timeUnitLength));
+                Thread.sleep((long)(os.getTimeUnitLength()));
             } 
             catch (InterruptedException ex) {
             // TBD catch and deal with exception ere

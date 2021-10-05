@@ -47,9 +47,10 @@ public class Main {
         }
         //</editor-fold>
 
-        os = new OS(100);
-        gui = new GUI_Driver(os, 100);
-        ProcessQueue queue1 = new ProcessQueue();
+        //ProcessQueue processQueue = new ProcessQueue();
+        os = new OS(500);
+        gui = new GUI_Driver(os);
+        
 
 
         gui.setVisible(true);
@@ -74,13 +75,14 @@ public class Main {
             int priority = lineSc.nextInt();
             
             Process newProcess = new Process(arrivalTime, processID, serviceTime, priority);
-            queue1.enqueue(newProcess);
+            os.readyQueue.enqueue(newProcess);
         }
         
         //test
-        System.out.println(queue1.display());
+        //System.out.println(queue1.display());
 
-        CPU cpu1 = new CPU(queue1);
+        CPU cpu1 = new CPU(1, os);
+        //CPU cpu2 = new CPU();
         os.addCPU(cpu1);
     }
     
