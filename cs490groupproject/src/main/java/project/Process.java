@@ -15,11 +15,15 @@ public class Process implements Comparable<Process> {
     private String processID;
     private int serviceTime;
     private int priority;
+    private int finishTime;
+
+    
 
     public Process(int arrivalTime, String processID, int serviceTime, int priority) {
         this.arrivalTime = arrivalTime;
         this.processID = processID;
         this.serviceTime = serviceTime;
+        this.finishTime = -1;
         this.priority = priority;
     }
     
@@ -37,6 +41,14 @@ public class Process implements Comparable<Process> {
 
     public int getPriority() {
         return priority;
+    }
+    
+    public int getFinishTime() {
+        return finishTime;
+    }
+
+    public void setFinishTime(int finishTime) {
+        this.finishTime = finishTime;
     }
 
     public void setArrivalTime(int arrivalTime) {

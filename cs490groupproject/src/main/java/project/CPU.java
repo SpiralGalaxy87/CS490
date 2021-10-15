@@ -39,19 +39,44 @@ public class CPU implements Runnable{
         return id;
     }
     public void run(){
-        while(o.readyQueue.size() > 0){
-
-            if(this.timeRemaining == 0){
-                this.curProcess = o.readyQueue.dequeue();
-                this.timeRemaining = this.curProcess.getServiceTime();
-            }   
-           
-            System.out.println("  ...  cpu" + this.id + " thread starting " + this.curProcess.getProcessID() + ", working for " + this.timeRemaining + " time units.");
-
-            while(this.timeRemaining > 0){
+        while(true){
+            if (o.readyQueue.size() > 0) {
+                if(this.timeRemaining <= 0){
+                    this.curProcess = o.readyQueue.dequeue();
+                    try {
+                        this.timeRemaining = this.curProcess.getServiceTime();
+                        System.out.println("  ...  cpu" + this.id + " thread starting " + this.curProcess.getProcessID() + ", working for " + this.timeRemaining + " time units.");
+                    }
+                    catch(NullPointerException ex) {
+                        
+                    }
+                }
+                while(this.timeRemaining > 0){
+                    try {
+                        Thread.sleep((long)(o.getTimeUnitLength()));
+                        this.timeRemaining--;
+                    } 
+                    catch (InterruptedException ex) {
+                    // TBD catch and deal with exception ere
+                        //System.out.println("Exception caught: " + ex + " with " + this.timeRemaining + " time remaining");
+                        return;
+                    }
+                }
+                //set process finish time, turnaround time, and normalized turnaround time
+                //System.out.println(this.curProcess.getProcessID() + " finished");
+                
+                try {
+                    this.curProcess.setFinishTime(o.curTime);
+                    o.finishedProcesses.enqueue(this.curProcess);
+                    curProcess = null;
+                }
+                catch(NullPointerException ex) {
+                }
+            }
+            else {
                 try {
                     Thread.sleep((long)(o.getTimeUnitLength()));
-                    this.timeRemaining--;
+                    
                 } 
                 catch (InterruptedException ex) {
                 // TBD catch and deal with exception ere
@@ -59,11 +84,10 @@ public class CPU implements Runnable{
                     return;
                 }
             }
-            System.out.println(this.curProcess.getProcessID() + " finished");
         }
         
         //once we get here, the process queue is empty.
         //System.out.println("queue is empty!");
-        curProcess = null;
+        
     }
 }

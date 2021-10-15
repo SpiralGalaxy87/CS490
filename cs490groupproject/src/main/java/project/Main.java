@@ -49,20 +49,30 @@ public class Main {
 
         //ProcessQueue processQueue = new ProcessQueue();
         os = new OS(800);
-        gui = new GUI_Driver(os);
         
-
-
-        gui.setVisible(true);
         
         /* Read in file to create processes and store in the ProcessQueue */
         // pass the path to the file as a parameter, create scanner
-        File inFile = new File("input.txt");
-        Scanner sc = new Scanner(inFile);
+        
+        File configFile = new File("config.txt");
+        Scanner sc = new Scanner(configFile);
+        String line;
+        String fileName = "";
+        while(sc.hasNextLine()) {
+            line = sc.nextLine();
+            if(!line.startsWith("#"))
+            {
+                fileName = line;
+            }
+        }
+        sc.close();
+        
+        File inFile = new File(fileName);
+        sc = new Scanner(inFile);
         //read info through scanner, create processes from it
         while (sc.hasNextLine())
         {
-            String line = sc.nextLine();
+            line = sc.nextLine();
             //System.out.println(line);
             Scanner lineSc = new Scanner(line).useDelimiter("\\s*,\\s");
             //arrival time
@@ -75,19 +85,21 @@ public class Main {
             int priority = lineSc.nextInt();
             
             Process newProcess = new Process(arrivalTime, processID, serviceTime, priority);
-            os.readyQueue.enqueue(newProcess);
+            os.futureQueue.enqueue(newProcess);
         }
         
         //test
         //System.out.println(queue1.display());
 
         CPU cpu1 = new CPU(1, os);
-        
         CPU cpu2 = new CPU(2, os);
         
         os.addCPU(cpu1);
-        
         os.addCPU(cpu2);
+        
+        gui = new GUI_Driver(os);
+        
+        gui.setVisible(true);
     }
     
     public Main()

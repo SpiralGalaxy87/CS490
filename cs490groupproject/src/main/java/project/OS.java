@@ -1,5 +1,6 @@
 package project;
 
+import java.util.ArrayList;
 import java.util.*;
 
 /*
@@ -13,9 +14,32 @@ import java.util.*;
  * @author Annaleise
  */
 public class OS {
-    private int curTime;
+    
+    Comparator<Process> arrivalComparator = new Comparator<Process>() {
+        @Override
+        public int compare(Process left, Process right) {
+            int returnVal;
+            if (left.getArrivalTime() < right.getArrivalTime())
+            {
+                returnVal = -1;
+            }
+            else if (left.getArrivalTime() > right.getArrivalTime())
+            {
+                returnVal = 1;
+            }
+            else
+            {
+                returnVal = 0;
+            }
+            return returnVal;
+        } 
+    };
+    
+    public int curTime;
+    
     public ProcessQueue readyQueue;
-    private ProcessQueue finishedProcesses;
+    public ProcessQueue futureQueue;
+    public ProcessQueue  finishedProcesses;
     private int timeUnitLength;
     private boolean isPaused;
     private ArrayList<CPU> cpuList = new ArrayList<>();
@@ -34,7 +58,44 @@ public class OS {
         
         //finihsed processes start out empty
         this.readyQueue = new ProcessQueue();
-        this.finishedProcesses = new ProcessQueue();
+        this.futureQueue = new ProcessQueue(new Comparator<Process>() {
+            @Override
+            public int compare(Process left, Process right) {
+                int returnVal;
+                if (left.getArrivalTime() < right.getArrivalTime())
+                {
+                    returnVal = -1;
+                }
+                else if (left.getArrivalTime() > right.getArrivalTime())
+                {
+                    returnVal = 1;
+                }
+                else
+                {
+                    returnVal = 0;
+                }
+                return returnVal;
+            }
+        });
+        this.finishedProcesses = new ProcessQueue(new Comparator<Process>() {
+            @Override
+            public int compare(Process left, Process right) {
+                int returnVal;
+                if (left.getFinishTime() < right.getFinishTime())
+                {
+                    returnVal = -1;
+                }
+                else if (left.getFinishTime() > right.getFinishTime())
+                {
+                    returnVal = 1;
+                }
+                else
+                {
+                    returnVal = 0;
+                }
+                return returnVal;
+            }
+        });
     }
     
     public void setTimeUnitLength(int length)
@@ -90,18 +151,16 @@ public class OS {
         return state;
     }
     public String displayStatus(){
-        String status = "Completed Processes:\n";
+        String status = "";
         if (finishedProcesses.processes != null)
         {
             for (Process process : finishedProcesses.processes)
             {
-                status += "Process " + process.getProcessID() + "\n";
+                status += process.getProcessID() + " " + process.getFinishTime() + "\n";
             }
         }
-        else
-            status += "N/A\n";
-        status += "Current throughput = " + computeThroughput() + "\n";
-        status += "Current time = " + curTime + " units";
+        //status += "Current throughput = " + computeThroughput() + "\n";
+        //status += "Current time = " + curTime + " units";
         
         return status;
     }

@@ -8,22 +8,47 @@ package project;
 import java.util.Arrays;
 import java.util.PriorityQueue;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.Iterator;
+import java.util.Comparator;
+
 
 /**
  *
  * @author Annaleise, Jake
  */
-public class ProcessQueue {
-   
+public class ArrivalQueue {
+    Comparator<Process> arrivalComparator = new Comparator<Process>() {
+
+        @Override
+        public int compare(Process left, Process right) {
+            int returnVal;
+            if (left.getArrivalTime() < right.getArrivalTime())
+            {
+                returnVal = -1;
+            }
+            else if (left.getArrivalTime() > right.getArrivalTime())
+            {
+                returnVal = 1;
+            }
+            else
+            {
+                returnVal = 0;
+            }
+            return returnVal;
+        } 
+    };
     public PriorityQueue<Process> processes;
 
-    public ProcessQueue() {
-        processes = new PriorityQueue<Process>();
+    public ArrivalQueue() {
+        processes = new PriorityQueue<Process>(arrivalComparator);
     }
-    public ProcessQueue(Comparator comp) {
-        processes = new PriorityQueue<Process>(comp);
+    /**
+     * Constructs an empty array dequeue with an initial capacity sufficient to
+     * hold the specified number of elements.
+     **/
+    public ArrivalQueue(int numElements)
+    {
+        processes = new PriorityQueue(numElements);
     }
 
     /** Inserts the specified element at the tail of this queue. **/
