@@ -134,10 +134,6 @@ public class OS {
         }
         //this.cpuThread.interrupt();
     }   
-
-    public void timeStep(){
-       
-    }
     public String displayQueueState() {
         
         String state = "";
@@ -156,7 +152,7 @@ public class OS {
         {
             for (Process process : finishedProcesses.processes)
             {
-                status += process.getProcessID() + " " + process.getFinishTime() + "\n";
+                status += process.getProcessID() + "\t" + process.getArrivalTime() + "\t" + process.getServiceTime()+ "\t" + process.getFinishTime() + "\n";
             }
         }
         //status += "Current throughput = " + computeThroughput() + "\n";

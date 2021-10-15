@@ -57,16 +57,16 @@ public class CPU implements Runnable{
                         this.timeRemaining--;
                     } 
                     catch (InterruptedException ex) {
-                    // TBD catch and deal with exception ere
-                        //System.out.println("Exception caught: " + ex + " with " + this.timeRemaining + " time remaining");
                         return;
                     }
                 }
-                //set process finish time, turnaround time, and normalized turnaround time
-                //System.out.println(this.curProcess.getProcessID() + " finished");
                 
                 try {
                     this.curProcess.setFinishTime(o.curTime);
+                    
+                    //set turnaround time
+                    //set normalized turnaround time: turnaround / service
+                    
                     o.finishedProcesses.enqueue(this.curProcess);
                     curProcess = null;
                 }
