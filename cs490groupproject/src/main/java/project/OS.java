@@ -146,13 +146,13 @@ public class OS {
         }  
         return state;
     }
-    public String displayStatus(){
+        public String displayStatus(){
         String status = "";
         if (finishedProcesses.processes != null)
         {
             for (Process process : finishedProcesses.processes)
             {
-                status += process.getProcessID() + "\t" + process.getArrivalTime() + "\t" + process.getServiceTime()+ "\t" + process.getFinishTime() + "\n";
+                status += process.getProcessID() + "\t" + process.getArrivalTime() + "\t" + process.getServiceTime()+ "\t" + process.getFinishTime() + "\t" + process.getTurnTime() + "\t" + process.getNormalTurnTime() + "\n";
             }
         }
         //status += "Current throughput = " + computeThroughput() + "\n";

@@ -16,6 +16,8 @@ public class Process implements Comparable<Process> {
     private int serviceTime;
     private int priority;
     private int finishTime;
+    private int turnTime;
+    private int normalTurnTime;
 
     
 
@@ -25,6 +27,7 @@ public class Process implements Comparable<Process> {
         this.serviceTime = serviceTime;
         this.finishTime = -1;
         this.priority = priority;
+ 
     }
     
     public int getArrivalTime() {
@@ -46,7 +49,18 @@ public class Process implements Comparable<Process> {
     public int getFinishTime() {
         return finishTime;
     }
-
+    
+    public int getTurnTime() 
+    {
+        this.turnTime=(finishTime-arrivalTime);
+        return turnTime;
+    }
+    
+    public int getNormalTurnTime(){
+        this.normalTurnTime=(turnTime/serviceTime);
+        return normalTurnTime;
+    }
+    
     public void setFinishTime(int finishTime) {
         this.finishTime = finishTime;
     }
@@ -54,6 +68,7 @@ public class Process implements Comparable<Process> {
     public void setArrivalTime(int arrivalTime) {
         this.arrivalTime = arrivalTime;
     }
+    
 
     public void setProcessID(String processID) {
         this.processID = processID;
