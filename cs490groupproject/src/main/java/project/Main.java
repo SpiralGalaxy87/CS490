@@ -7,7 +7,7 @@ package project;
 
 /**
  *
- * @author Jeni, Jake, Annaleise, Ben
+ * @author Jeni, Jake, Annaleise, Benjamin
  */
 
 import java.io.File;
@@ -17,8 +17,8 @@ import java.io.FileNotFoundException;
 
 public class Main {
     
-    public static OS os;
-    public static GUI_Driver gui;
+    private static OS os;
+    private static GUI_Driver gui;
     
     public static void main(String args[]) throws FileNotFoundException
     {    
@@ -85,7 +85,7 @@ public class Main {
             int priority = lineSc.nextInt();
             
             Process newProcess = new Process(arrivalTime, processID, serviceTime, priority);
-            os.futureQueue.enqueue(newProcess);
+            os.getFutureQueue().enqueue(newProcess);
         }
         
         //test
