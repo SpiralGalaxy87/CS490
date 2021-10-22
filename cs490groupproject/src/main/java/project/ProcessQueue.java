@@ -17,7 +17,7 @@ import java.util.Iterator;
  */
 public class ProcessQueue {
    
-    public PriorityQueue<Process> processes;
+    private PriorityQueue<Process> processes;
 
     public ProcessQueue() {
         processes = new PriorityQueue<Process>();
@@ -32,6 +32,10 @@ public class ProcessQueue {
         return processes.add(p);
     }
     
+    public PriorityQueue<Process> getProcess(){
+        
+        return this.processes;
+    }
     /**
      * Retrieves and removes the head of this queue, or returns null if this
      * queue is empty.
