@@ -7,7 +7,7 @@ package project;
 
 /**
  *
- * @author Annaleise, Jake
+ * @author Annaleise, Jake, Benjamin
  */
 public class CPU implements Runnable{
     private OS o;
@@ -40,9 +40,9 @@ public class CPU implements Runnable{
     }
     public void run(){
         while(true){
-            if (o.readyQueue.size() > 0) {
+            if (o.getReadyQueue().size() > 0) {
                 if(this.timeRemaining <= 0){
-                    this.curProcess = o.readyQueue.dequeue();
+                    this.curProcess = o.getReadyQueue().dequeue();
                     try {
                         this.timeRemaining = this.curProcess.getServiceTime();
                         System.out.println("  ...  cpu" + this.id + " thread starting " + this.curProcess.getProcessID() + ", working for " + this.timeRemaining + " time units.");
@@ -62,12 +62,12 @@ public class CPU implements Runnable{
                 }
                 
                 try {
-                    this.curProcess.setFinishTime(o.curTime);
+                    this.curProcess.setFinishTime(o.getCurTime());
                     
                     //set turnaround time
                     //set normalized turnaround time: turnaround / service
                     
-                    o.finishedProcesses.enqueue(this.curProcess);
+                    o.getFinishedProcesses().enqueue(this.curProcess);
                     curProcess = null;
                 }
                 catch(NullPointerException ex) {

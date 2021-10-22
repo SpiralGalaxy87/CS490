@@ -374,10 +374,10 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
     */ 
     private void timeStep(){
         
-        var_curTime.setText(Integer.toString(os.curTime));
+        var_curTime.setText(Integer.toString(os.getCurTime()));
         //check time, if anything in future queue has this time, move it to the readyQueue
-        while(os.futureQueue.size() > 0 && os.futureQueue.peek().getArrivalTime()==os.curTime) {
-            os.readyQueue.enqueue(os.futureQueue.dequeue());
+        while(os.getFutureQueue().size() > 0 && os.getFutureQueue().peek().getArrivalTime()==os.getCurTime()) {
+            os.getReadyQueue().enqueue(os.getFutureQueue().dequeue());
         }
         
             
@@ -386,8 +386,8 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
         table_readyQueue.setText(this.os.displayQueueState());
         table_report.setText(this.os.displayStatus());
         
-        os.curTime++;
-        var_throughput.setText(String.format("%.2f",(float)this.os.finishedProcesses.size() / this.os.curTime));
+        os.incrementCurTime();
+        var_throughput.setText(String.format("%.2f",(float)this.os.getFinishedProcesses().size() / this.os.getCurTime()));
     }
 
     /**

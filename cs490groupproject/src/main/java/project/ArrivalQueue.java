@@ -14,10 +14,10 @@ import java.util.Comparator;
 
 /**
  *
- * @author Annaleise, Jake
+ * @author Annaleise, Jake, Benjamin
  */
 public class ArrivalQueue {
-    Comparator<Process> arrivalComparator = new Comparator<Process>() {
+    private Comparator<Process> arrivalComparator = new Comparator<Process>() {
 
         @Override
         public int compare(Process left, Process right) {
@@ -37,7 +37,7 @@ public class ArrivalQueue {
             return returnVal;
         } 
     };
-    public PriorityQueue<Process> processes;
+    private PriorityQueue<Process> processes;
 
     public ArrivalQueue() {
         processes = new PriorityQueue<Process>(arrivalComparator);
