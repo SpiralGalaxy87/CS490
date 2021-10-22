@@ -164,7 +164,7 @@ public class OS {
     public String displayQueueState() {
         
         String state = "";
-        for (Process p : readyQueue.processes)
+        for (Process p : readyQueue.getProcess())
         {
             state += p.getProcessID();
             state += "\t";
@@ -175,9 +175,9 @@ public class OS {
     }
         public String displayStatus(){
         String status = "";
-        if (finishedProcesses.processes != null)
+        if (finishedProcesses.getProcess() != null)
         {
-            for (Process process : finishedProcesses.processes)
+            for (Process process : finishedProcesses.getProcess())
             {
                 status += process.getProcessID() + "\t" + process.getArrivalTime() + "\t" + process.getServiceTime()+ "\t" + process.getFinishTime() + "\t" + process.getTurnTime() + "\t" + process.getNormalTurnTime() + "\n";
             }
