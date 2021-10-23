@@ -53,12 +53,12 @@ public class OS {
         
         //start out paused
         this.isPaused = false;
-        
         //time starts at 0
         this.curTime = 0;
         
-        //finihsed processes start out empty
         this.readyQueue = new ProcessQueue();
+        
+        //use the unique constructor to sort by arrival time.
         this.futureQueue = new ProcessQueue(new Comparator<Process>() {
             @Override
             public int compare(Process left, Process right) {
@@ -78,6 +78,8 @@ public class OS {
                 return returnVal;
             }
         });
+        
+        //use the unique constructor to sort by finish time.
         this.finishedProcesses = new ProcessQueue(new Comparator<Process>() {
             @Override
             public int compare(Process left, Process right) {
@@ -98,6 +100,7 @@ public class OS {
             }
         });
     }
+    
     
     public void setTimeUnitLength(int length)
     {
@@ -141,6 +144,7 @@ public class OS {
         cpuList.add(cpu);
     }
     
+    //this method BEGINS the multiple threads needed to run the CPUs.
     public void startCPUs()
     {
         //this just starts the single CPU right now. 
@@ -152,7 +156,7 @@ public class OS {
             System.out.println("Started thread for CPU " + cpu.getID());
         }
     }
-
+    //this method STOPS the multiple threads running the CPUs.
     public void stopCPUs()
     {
         for (Thread t : cpuThreadList)
@@ -161,6 +165,9 @@ public class OS {
         }
         //this.cpuThread.interrupt();
     }   
+    
+    
+    //this is used to display the processes that have arrived but haven't been run yet. Ready. Waiting.
     public String displayQueueState() {
         
         String state = "";
@@ -173,7 +180,9 @@ public class OS {
         }  
         return state;
     }
-        public String displayStatus(){
+    
+    //this is used to display the finished processes and all their stats.
+    public String displayStatus(){
         String status = "";
         if (finishedProcesses.getProcess() != null)
         {
@@ -190,15 +199,6 @@ public class OS {
     
     public void setIsPaused(boolean isPaused){
         this.isPaused = isPaused;
-    }
-    
-    public double computeThroughput()
-    {
-        return 0.0;
-    }
-    
-    public void importProcesses(String filename){
-    
     }
 
     public ArrayList<CPU> getCPUList(){

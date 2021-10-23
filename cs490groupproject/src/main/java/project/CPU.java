@@ -11,7 +11,6 @@ package project;
  */
 public class CPU implements Runnable{
     private OS o;
-    //private ProcessQueue readyQueue;
     private Process curProcess;
     private int timeRemaining;
     private int id;
@@ -21,6 +20,8 @@ public class CPU implements Runnable{
         this.o = o;
         this.timeRemaining = 0;
     }
+    
+    //This is used in the GUI to display the current action of the CPU.
     public String displayStatus()
     {
         String status = ("CPU " + id) + "\n";
@@ -38,9 +39,15 @@ public class CPU implements Runnable{
     public int getID() {
         return id;
     }
+    
+    //This is what the 'thread' runs.
+
     public void run(){
+        //We use while(true) to loop this forever.
         while(true){
+            //if the ready queue is not empty, grab it!
             if (o.getReadyQueue().size() > 0) {
+                //if the CPU isn't currently working on a process... grab the next one available.
                 if(this.timeRemaining <= 0){
                     this.curProcess = o.getReadyQueue().dequeue();
                     try {
@@ -51,6 +58,7 @@ public class CPU implements Runnable{
                         
                     }
                 }
+                //with the process grabbed, sleep for each time unit
                 while(this.timeRemaining > 0){
                     try {
                         Thread.sleep((long)(o.getTimeUnitLength()));
@@ -60,7 +68,7 @@ public class CPU implements Runnable{
                         return;
                     }
                 }
-                
+                //once the time remaining has lapsed to zero, set the process' finish time and add to finished list.
                 try {
                     this.curProcess.setFinishTime(o.getCurTime());
                     
@@ -73,6 +81,7 @@ public class CPU implements Runnable{
                 catch(NullPointerException ex) {
                 }
             }
+            //well, nothing here, so lets wait until there is one there
             else {
                 try {
                     Thread.sleep((long)(o.getTimeUnitLength()));
@@ -85,9 +94,6 @@ public class CPU implements Runnable{
                 }
             }
         }
-        
-        //once we get here, the process queue is empty.
-        //System.out.println("queue is empty!");
         
     }
 }

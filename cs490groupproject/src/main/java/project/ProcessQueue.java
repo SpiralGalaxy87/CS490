@@ -22,11 +22,14 @@ public class ProcessQueue {
     public ProcessQueue() {
         processes = new PriorityQueue<Process>();
     }
+    
+    //we use this to create a queue with a unique comparator to sort by different things.
     public ProcessQueue(Comparator comp) {
         processes = new PriorityQueue<Process>(comp);
     }
 
     /** Inserts the specified element at the tail of this queue. **/
+    //This is synchronized to ensure that two CPUs do not pull the SAME process at the same time.
     public synchronized boolean enqueue(Process p)
     {
         return processes.add(p);
@@ -36,6 +39,7 @@ public class ProcessQueue {
         
         return this.processes;
     }
+    
     /**
      * Retrieves and removes the head of this queue, or returns null if this
      * queue is empty.

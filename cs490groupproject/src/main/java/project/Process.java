@@ -20,12 +20,12 @@ public class Process implements Comparable<Process> {
     private int normalTurnTime;
 
     
-
+    //basic constructor
     public Process(int arrivalTime, String processID, int serviceTime, int priority) {
         this.arrivalTime = arrivalTime;
         this.processID = processID;
         this.serviceTime = serviceTime;
-        this.finishTime = -1;
+        this.finishTime = -1;       //finishTime set later, not at start. -1 means never finished yet.
         this.priority = priority;
  
     }
@@ -50,12 +50,14 @@ public class Process implements Comparable<Process> {
         return finishTime;
     }
     
+    //calculates turnaround time and sets it and returns it.
     public int getTurnTime() 
     {
         this.turnTime=(finishTime-arrivalTime);
         return turnTime;
     }
     
+    //calculates normalized turnaround time and returns it / sets it. 
     public int getNormalTurnTime(){
         this.normalTurnTime=(turnTime/serviceTime);
         return normalTurnTime;
@@ -82,6 +84,7 @@ public class Process implements Comparable<Process> {
         this.priority = priority;
     }
 
+    //This is used to display the p
     public String display(){
         return processID + " Priority: " + priority + ". Arrived at: " + arrivalTime;
         //return processID + " arrived at time: " + arrivalTime + " and will execute for: " + serviceTime + " time units. ";
