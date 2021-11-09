@@ -147,6 +147,7 @@ public class OS {
     //this method BEGINS the multiple threads needed to run the CPUs.
     public void startCPUs()
     {
+        
         //this just starts the single CPU right now. 
         //later this should loop to start up threads for every CPU in cpuList
         for (CPU cpu : cpuList) {
