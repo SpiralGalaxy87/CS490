@@ -38,9 +38,9 @@ public class OS {
     
     private int curTime;
     
-    private ProcessQueue readyQueue;
+    //private ProcessQueue readyQueue;
     private ProcessQueue futureQueue;
-    private ProcessQueue  finishedProcesses;
+    //private ProcessQueue  finishedProcesses;
     private int timeUnitLength;
     private boolean isPaused;
     private ArrayList<CPU> cpuList = new ArrayList<>();
@@ -56,7 +56,7 @@ public class OS {
         //time starts at 0
         this.curTime = 0;
         
-        this.readyQueue = new ProcessQueue();
+        
         
         //use the unique constructor to sort by arrival time.
         this.futureQueue = new ProcessQueue(new Comparator<Process>() {
@@ -79,26 +79,6 @@ public class OS {
             }
         });
         
-        //use the unique constructor to sort by finish time.
-        this.finishedProcesses = new ProcessQueue(new Comparator<Process>() {
-            @Override
-            public int compare(Process left, Process right) {
-                int returnVal;
-                if (left.getFinishTime() < right.getFinishTime())
-                {
-                    returnVal = -1;
-                }
-                else if (left.getFinishTime() > right.getFinishTime())
-                {
-                    returnVal = 1;
-                }
-                else
-                {
-                    returnVal = 0;
-                }
-                return returnVal;
-            }
-        });
     }
     
     
@@ -129,15 +109,6 @@ public class OS {
         return this.futureQueue;
     }
     
-    public ProcessQueue getReadyQueue(){
-        
-        return this.readyQueue;
-    }
-    
-    public ProcessQueue getFinishedProcesses(){
-        
-        return this.finishedProcesses;
-    }
     
     public void addCPU(CPU cpu)
     {
@@ -168,34 +139,9 @@ public class OS {
     
     
     //this is used to display the processes that have arrived but haven't been run yet. Ready. Waiting.
-    public String displayQueueState() {
-        
-        String state = "";
-        for (Process p : readyQueue.getProcess())
-        {
-            state += p.getProcessID();
-            state += "\t";
-            state += p.getServiceTime();
-            state += "\n";
-        }  
-        return state;
-    }
     
     //this is used to display the finished processes and all their stats.
-    public String displayStatus(){
-        String status = "";
-        if (finishedProcesses.getProcess() != null)
-        {
-            for (Process process : finishedProcesses.getProcess())
-            {
-                status += process.getProcessID() + "\t" + process.getArrivalTime() + "\t" + process.getServiceTime()+ "\t" + process.getFinishTime() + "\t" + process.getTurnTime() + "\t" + process.getNormalTurnTime() + "\n";
-            }
-        }
-        //status += "Current throughput = " + computeThroughput() + "\n";
-        //status += "Current time = " + curTime + " units";
-        
-        return status;
-    }
+    
     
     public void setIsPaused(boolean isPaused){
         this.isPaused = isPaused;

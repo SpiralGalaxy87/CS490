@@ -377,17 +377,21 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
         var_curTime.setText(Integer.toString(os.getCurTime()));
         //check time, if anything in future queue has this time, move it to the readyQueue
         while(os.getFutureQueue().size() > 0 && os.getFutureQueue().peek().getArrivalTime()==os.getCurTime()) {
-            os.getReadyQueue().enqueue(os.getFutureQueue().dequeue());
+            for (CPU cpu : os.getCPUList()) {
+                cpu.getReadyQueue().enqueue(os.getFutureQueue().peek()); 
+              
+            }
+            os.getFutureQueue().dequeue();
         }
         
             
         cpu1_Status.setText(this.os.getCPUList().get(0).displayStatus());
         cpu2_Status.setText(this.os.getCPUList().get(1).displayStatus());
-        table_readyQueue.setText(this.os.displayQueueState());
-        table_report.setText(this.os.displayStatus());
+        table_readyQueue.setText(this.os.getCPUList().get(1).displayQueueState());
+        table_report.setText(this.os.getCPUList().get(1).displayFinished());
         
         os.incrementCurTime();
-        var_throughput.setText(String.format("%.2f",(float)this.os.getFinishedProcesses().size() / this.os.getCurTime()));
+        //var_throughput.setText(String.format("%.2f",(float)this.os.getCPUList().get(1).getFinishedQueue().size() / this.os.getCurTime()));
     }
 
     /**
@@ -416,16 +420,17 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
         System.out.println("  ...  GUI updater thread starting ");
 
         while(true){
-            this.timeStep();
+            
             try {
                 Thread.sleep((long)(os.getTimeUnitLength()));
             } 
             catch (InterruptedException ex) {
             // TBD catch and deal with exception ere
                 System.out.println("GUI Driver Exception caught: " + ex);
-                this.timeStep();
+                //this.timeStep();
                 return;
             }
+            this.timeStep();
         }
     }
 }   

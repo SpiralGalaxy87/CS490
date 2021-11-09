@@ -5,12 +5,16 @@
  */
 package project;
 
+import java.util.Comparator;
+
 /**
  *
  * @author Annaleise, Jake, Benjamin
  */
 public class CPU implements Runnable{
     private OS o;
+    private ProcessQueue readyQueue;
+    private ProcessQueue  finishedQueue;
     private Process curProcess;
     private int timeRemaining;
     private int id;
@@ -19,6 +23,43 @@ public class CPU implements Runnable{
         this.id = id;
         this.o = o;
         this.timeRemaining = 0;
+        this.readyQueue = new ProcessQueue();
+        //use the unique constructor to sort by finish time.
+        this.finishedQueue = new ProcessQueue(new Comparator<Process>() {
+            @Override
+            public int compare(Process left, Process right) {
+                int returnVal;
+                if (left.getFinishTime() < right.getFinishTime())
+                {
+                    returnVal = -1;
+                }
+                else if (left.getFinishTime() > right.getFinishTime())
+                {
+                    returnVal = 1;
+                }
+                else
+                {
+                    returnVal = 0;
+                }
+                return returnVal;
+            }
+        });
+    }
+    public ProcessQueue getFinishedQueue(){
+        
+        return this.finishedQueue;
+    }
+    public String displayQueueState() {
+        
+        String state = "";
+        for (Process p : readyQueue.getProcess())
+        {
+            state += p.getProcessID();
+            state += "\t";
+            state += p.getServiceTime();
+            state += "\n";
+        }  
+        return state;
     }
     
     //This is used in the GUI to display the current action of the CPU.
@@ -36,20 +77,40 @@ public class CPU implements Runnable{
         }        
         return status;
     }
+    
+    public String displayFinished(){
+        String status = "";
+        if (finishedQueue.getProcess() != null)
+        {
+            for (Process process : finishedQueue.getProcess())
+            {
+                status += process.getProcessID() + "\t" + process.getArrivalTime() + "\t" + process.getServiceTime()+ "\t" + process.getFinishTime() + "\t" + process.getTurnTime() + "\t" + process.getNormalTurnTime() + "\n";
+            }
+        }
+        //status += "Current throughput = " + computeThroughput() + "\n";
+        //status += "Current time = " + curTime + " units";
+        
+        return status;
+    }
+    
     public int getID() {
         return id;
     }
-    
     //This is what the 'thread' runs.
-
+    
+    public ProcessQueue getReadyQueue(){
+        
+        return this.readyQueue;
+    }
+    
     public void run(){
         //We use while(true) to loop this forever.
         while(true){
             //if the ready queue is not empty, grab it!
-            if (o.getReadyQueue().size() > 0) {
+            if (readyQueue.size() > 0) {
                 //if the CPU isn't currently working on a process... grab the next one available.
                 if(this.timeRemaining <= 0){
-                    this.curProcess = o.getReadyQueue().dequeue();
+                    this.curProcess = readyQueue.dequeue();
                     try {
                         this.timeRemaining = this.curProcess.getServiceTime();
                         System.out.println("  ...  cpu" + this.id + " thread starting " + this.curProcess.getProcessID() + ", working for " + this.timeRemaining + " time units.");
@@ -75,7 +136,7 @@ public class CPU implements Runnable{
                     //set turnaround time
                     //set normalized turnaround time: turnaround / service
                     
-                    o.getFinishedProcesses().enqueue(this.curProcess);
+                    finishedQueue.enqueue(this.curProcess);
                     curProcess = null;
                 }
                 catch(NullPointerException ex) {
