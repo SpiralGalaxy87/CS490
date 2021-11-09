@@ -541,17 +541,24 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
         var_curTime.setText(Integer.toString(os.getCurTime()));
         //check time, if anything in future queue has this time, move it to the readyQueue
         while(os.getFutureQueue().size() > 0 && os.getFutureQueue().peek().getArrivalTime()==os.getCurTime()) {
-            os.getReadyQueue().enqueue(os.getFutureQueue().dequeue());
+            for (CPU cpu : os.getCPUList()) {
+                cpu.getReadyQueue().enqueue(os.getFutureQueue().peek());
+            }
+            os.getFutureQueue().dequeue();
         }
         
             
-        cpu1_StatusRR.setText(this.os.getCPUList().get(0).displayStatus());
-        cpu2_StatusHRRN.setText(this.os.getCPUList().get(1).displayStatus());
-        table_readyQueueHRRN.setText(this.os.displayQueueState());
-        table_reportHRRN.setText(this.os.displayStatus());
+        cpu1_StatusRR.setText(this.os.getCPUList().get(1).displayStatus());
+        cpu2_StatusHRRN.setText(this.os.getCPUList().get(0).displayStatus());
+        cpu1_StatusRR.setText(this.os.getCPUList().get(1).displayStatus());
+        table_readyQueueRR.setText(this.os.getCPUList().get(1).displayQueueState());
+        table_readyQueueHRRN.setText(this.os.getCPUList().get(0).displayQueueState());
+        table_reportHRRN.setText(this.os.getCPUList().get(0).displayFinished());
+        table_reportRR.setText(this.os.getCPUList().get(1).displayFinished());
+
+        averagenTATHRRN.setText(String.format("%.2f",(float)this.os.getCPUList().get(0).getFinishedQueue().size() / this.os.getCurTime()));
+        averagenTATRR.setText(String.format("%.2f",(float)this.os.getCPUList().get(1).getFinishedQueue().size() / this.os.getCurTime()));
         
-        os.incrementCurTime();
-        averagenTATHRRN.setText(String.format("%.2f",(float)this.os.getFinishedProcesses().size() / this.os.getCurTime()));
     }
 
     /**
@@ -583,6 +590,7 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
             this.timeStep();
             try {
                 Thread.sleep((long)(os.getTimeUnitLength()));
+                os.incrementCurTime();
             } 
             catch (InterruptedException ex) {
             // TBD catch and deal with exception ere
