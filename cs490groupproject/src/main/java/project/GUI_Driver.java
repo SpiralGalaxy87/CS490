@@ -14,7 +14,6 @@ import javax.swing.*;
 public class GUI_Driver extends javax.swing.JFrame implements Runnable {
 
     public static OS os;
-    public boolean isPaused = true;
     private int timeUnitLength;
     private Thread guiUpdateThread;
     
@@ -458,11 +457,10 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
 
     private void button_startPauseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_startPauseActionPerformed
         // TODO add your handling code here:
-        if (isPaused) lbl_pause_play.setText("System Running");
+        if (os.getIsPaused()) lbl_pause_play.setText("System Running");
         else lbl_pause_play.setText("System Paused");
-        isPaused = !isPaused;
-        os.setIsPaused(isPaused);
-        if(isPaused){
+        os.setIsPaused(!os.getIsPaused());
+        if(os.getIsPaused()){
             os.stopCPUs();
             this.stopGUIUpdater();
         }
@@ -475,7 +473,6 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
     private void button_timeunitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_timeunitActionPerformed
         int num = ((Number)(var_time.getValue())).intValue();
         os.setTimeUnitLength(num);
-        //this.timeUnitLength = os.getTimeUnitLength();
     }//GEN-LAST:event_button_timeunitActionPerformed
 
     //Removed main function
@@ -534,7 +531,7 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
 
 
     /**
-    * Actions that need to be performed at each timestep, including updating all info displays.  
+    * Actions that need to be performed at each time step, including updating all info displays.  
     */ 
     private void timeStep(){
         
@@ -545,8 +542,7 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
                 cpu.getReadyQueue().enqueue(os.getFutureQueue().peek());
             }
             os.getFutureQueue().dequeue();
-        }
-        
+        }        
             
         cpu1_StatusRR.setText(this.os.getCPUList().get(1).displayStatus());
         cpu2_StatusHRRN.setText(this.os.getCPUList().get(0).displayStatus());
@@ -555,30 +551,10 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
         table_readyQueueHRRN.setText(this.os.getCPUList().get(0).displayQueueState());
         table_reportHRRN.setText(this.os.getCPUList().get(0).displayFinished());
         table_reportRR.setText(this.os.getCPUList().get(1).displayFinished());
-
         averagenTATHRRN.setText(String.format("%.2f",(float)this.os.getCPUList().get(0).getFinishedQueue().size() / this.os.getCurTime()));
         averagenTATRR.setText(String.format("%.2f",(float)this.os.getCPUList().get(1).getFinishedQueue().size() / this.os.getCurTime()));
         
     }
-
-    /**
-    * Starts thread for GUI Updates when the system starts playing.
-    */
-    public void startGUIUpdater()
-    {
-        Thread t = new Thread(this);    // add start thread for gui updates
-        this.guiUpdateThread = t;
-        t.start();
-        System.out.println("Started the GUI Updater thread");
-    }
-
-    /**
-    * Interrupt GUI Updater Thread when the system pauses;
-    */
-    public void stopGUIUpdater()
-    {
-        this.guiUpdateThread.interrupt();
-    }   
      
     /**
     * Run timeStep updates once every time step.

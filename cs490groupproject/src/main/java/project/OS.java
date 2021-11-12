@@ -147,8 +147,14 @@ public class OS {
     public void setIsPaused(boolean isPaused){
         this.isPaused = isPaused;
     }
+    public boolean getIsPaused() {
+        return this.isPaused;
+    }
 
     public ArrayList<CPU> getCPUList(){
         return this.cpuList;
+    }
+    public ArrayList<Thread> getCPUThreadList(){
+        return this.cpuThreadList;
     }
 }
