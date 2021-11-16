@@ -460,7 +460,7 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
         if (os.getPaused()) lbl_pause_play.setText("System Running");
         else lbl_pause_play.setText("System Paused");
         os.setPaused(!os.getPaused());
-        if(os.getPaused()){
+        if(!os.getPaused()){
             os.stopCPUs();
             this.stopGUIUpdater();
         }
