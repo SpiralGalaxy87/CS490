@@ -100,6 +100,7 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
 
         cpu1_StatusRR.setEditable(false);
         cpu1_StatusRR.setColumns(20);
+        cpu1_StatusRR.setFont(new java.awt.Font("Courier New", 0, 11)); // NOI18N
         cpu1_StatusRR.setLineWrap(true);
         cpu1_StatusRR.setRows(5);
         cpu1_StatusRR.setWrapStyleWord(true);
@@ -109,8 +110,10 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
         jScrollPane2.setViewportView(cpu1_StatusRR);
 
         table_reportHRRN.setEditable(false);
-        table_reportHRRN.setColumns(20);
-        table_reportHRRN.setRows(5);
+        table_reportHRRN.setColumns(1);
+        table_reportHRRN.setFont(new java.awt.Font("Courier New", 0, 11)); // NOI18N
+        table_reportHRRN.setLineWrap(true);
+        table_reportHRRN.setRows(1);
         jScrollPane3.setViewportView(table_reportHRRN);
 
         lbl_timeUnit.setText("1 Time Unit =");
@@ -137,6 +140,7 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
 
         cpu2_StatusHRRN.setEditable(false);
         cpu2_StatusHRRN.setColumns(20);
+        cpu2_StatusHRRN.setFont(new java.awt.Font("Courier New", 0, 11)); // NOI18N
         cpu2_StatusHRRN.setLineWrap(true);
         cpu2_StatusHRRN.setRows(5);
         cpu2_StatusHRRN.setWrapStyleWord(true);
@@ -156,6 +160,7 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
 
         table_readyQueueHRRN.setEditable(false);
         table_readyQueueHRRN.setColumns(20);
+        table_readyQueueHRRN.setFont(new java.awt.Font("Courier New", 0, 11)); // NOI18N
         table_readyQueueHRRN.setLineWrap(true);
         table_readyQueueHRRN.setRows(5);
         table_readyQueueHRRN.setAutoscrolls(false);
@@ -237,8 +242,10 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
         averagenTATRR.setText("0.00");
 
         table_reportRR.setEditable(false);
-        table_reportRR.setColumns(20);
-        table_reportRR.setRows(5);
+        table_reportRR.setColumns(1);
+        table_reportRR.setFont(new java.awt.Font("Courier New", 0, 11)); // NOI18N
+        table_reportRR.setLineWrap(true);
+        table_reportRR.setRows(1);
         jScrollPane6.setViewportView(table_reportRR);
 
         lbl_report_nameRR.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -256,6 +263,7 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
 
         table_readyQueueRR.setEditable(false);
         table_readyQueueRR.setColumns(20);
+        table_readyQueueRR.setFont(new java.awt.Font("Courier New", 0, 11)); // NOI18N
         table_readyQueueRR.setLineWrap(true);
         table_readyQueueRR.setRows(5);
         table_readyQueueRR.setAutoscrolls(false);
@@ -319,8 +327,8 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
                                             .addComponent(average_nTATHRRN, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                             .addComponent(averagenTATHRRN, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(50, 50, 50)
-                                            .addComponent(averagenTATFormulaHRRN, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(averagenTATFormulaHRRN, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGroup(layout.createSequentialGroup()
                                             .addGap(215, 215, 215)
@@ -339,12 +347,6 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
                                             .addComponent(lbl_report_TATRR, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                             .addComponent(lbl_report_nTATRR, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(average_nTATRR, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(averagenTATRR, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(50, 50, 50)
-                                            .addComponent(averagenTATFormulaRR, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGroup(layout.createSequentialGroup()
                                             .addComponent(lbl_processNameRR, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -358,7 +360,13 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
                                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addComponent(var_timeSliceRR, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addComponent(lbl_cpuRR1)
-                                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))))))))
+                                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(average_nTATRR, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(averagenTATRR, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(averagenTATFormulaRR, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(174, 174, 174)
                         .addComponent(lbl_timeUnit1)
@@ -402,7 +410,7 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(36, 36, 36)
+                        .addGap(30, 30, 30)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lbl_report_nameHRRN, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lbl_report_arriveHRRN, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -411,12 +419,7 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
                             .addComponent(lbl_report_TATHRRN, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lbl_report_nTATHRRN, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(average_nTATHRRN, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(averagenTATFormulaHRRN, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(averagenTATHRRN)))
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(56, 56, 56)
                         .addComponent(waitingProcessQueueLabelRR)
@@ -443,12 +446,17 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
                             .addComponent(lbl_report_TATRR, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lbl_report_nTATRR, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(average_nTATRR, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(averagenTATFormulaRR, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(averagenTATRR))))
+                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(average_nTATHRRN, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(averagenTATHRRN))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(averagenTATFormulaHRRN, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(average_nTATRR, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(averagenTATRR)
+                        .addComponent(averagenTATFormulaRR, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(16, 16, 16))
         );
 

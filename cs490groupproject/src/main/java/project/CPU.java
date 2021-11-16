@@ -84,7 +84,15 @@ public class CPU implements Runnable{
         {
             for (Process process : finishedQueue.getProcess())
             {
-                status += process.getProcessID() + "\t" + process.getArrivalTime() + "\t" + process.getServiceTime()+ "\t" + process.getFinishTime() + "\t" + process.getTurnTime() + "\t" + process.getNormalTurnTime() + "\n";
+                String line = "";
+                line += String.format("%1$-13s", process.getProcessID());
+                line += String.format("%1$-12d", process.getArrivalTime());
+                line += String.format("%1$-13d", process.getServiceTime());
+                line += String.format("%1$-13d", process.getFinishTime());
+                line += String.format("%1$-7d", process.getTurnTime());
+                line += String.format("%1$-7d", process.getNormalTurnTime());
+                status += line + "\n";
+                //status += process.getProcessID() + "\t" + process.getArrivalTime() + "\t" + process.getServiceTime()+ "\t" + process.getFinishTime() + "\t" + process.getTurnTime() + "\t" + process.getNormalTurnTime() + "\n";
             }
         }
         //status += "Current throughput = " + computeThroughput() + "\n";
@@ -104,8 +112,9 @@ public class CPU implements Runnable{
     }
     
     public void run(){
-        //We use while(true) to loop this forever.
-        while(!o.getPaused()){
+        //While the CPU isn't paused...
+        //while(!o.getPaused()){
+        while(true){
             //if the ready queue is not empty, grab it!
             if (readyQueue.size() > 0) {
                 //if the CPU isn't currently working on a process... grab the next one available.
