@@ -457,10 +457,10 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
 
     private void button_startPauseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_startPauseActionPerformed
         // TODO add your handling code here:
-        if (os.getIsPaused()) lbl_pause_play.setText("System Running");
+        if (os.getPaused()) lbl_pause_play.setText("System Running");
         else lbl_pause_play.setText("System Paused");
-        os.setIsPaused(!os.getIsPaused());
-        if(os.getIsPaused()){
+        os.setPaused(!os.getPaused());
+        if(os.getPaused()){
             os.stopCPUs();
             this.stopGUIUpdater();
         }
@@ -475,6 +475,27 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
         os.setTimeUnitLength(num);
     }//GEN-LAST:event_button_timeunitActionPerformed
 
+    
+    /**
+    * Starts thread for GUI Updates when the system starts playing.
+    */
+    public void startGUIUpdater()
+    {
+        Thread t = new Thread(this);    // add start thread for gui updates
+        this.guiUpdateThread = t;
+        t.start();
+        System.out.println("Started the GUI Updater thread");
+    }
+
+    /**
+    * Interrupt GUI Updater Thread when the system pauses;
+    */
+    public void stopGUIUpdater()
+    {
+        this.guiUpdateThread.interrupt();
+    }   
+    
+    
     //Removed main function
     //All main functionality in Main class
 

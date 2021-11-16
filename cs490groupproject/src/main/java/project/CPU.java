@@ -105,7 +105,7 @@ public class CPU implements Runnable{
     
     public void run(){
         //We use while(true) to loop this forever.
-        while(!o.getIsPaused()){
+        while(!o.getPaused()){
             //if the ready queue is not empty, grab it!
             if (readyQueue.size() > 0) {
                 //if the CPU isn't currently working on a process... grab the next one available.

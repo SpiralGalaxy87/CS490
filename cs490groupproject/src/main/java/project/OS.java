@@ -144,10 +144,10 @@ public class OS {
     //this is used to display the finished processes and all their stats.
     
     
-    public void setIsPaused(boolean isPaused){
+    public void setPaused(boolean isPaused){
         this.isPaused = isPaused;
     }
-    public boolean getIsPaused() {
+    public boolean getPaused() {
         return this.isPaused;
     }
 
