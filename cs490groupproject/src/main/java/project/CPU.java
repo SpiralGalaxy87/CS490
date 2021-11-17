@@ -18,12 +18,29 @@ public class CPU implements Runnable{
     private Process curProcess;
     private int timeRemaining;
     private int id;
+    private int timeQuantum; //used by rr. length of time quantum, set by user.  
+    private int quantumRemaining; //used by rr. ammount of time remaining in current quantum.
     
     public CPU(int id, OS o) {
         this.id = id;
         this.o = o;
         this.timeRemaining = 0;
-        this.readyQueue = new ProcessQueue();
+        this.timeQuantum = 10; //later set this with user input;
+        this.quantumRemaining = this.timeQuantum;
+        
+        if(this.id == 2){ //for round robin, always insert at the back of the queue
+           this.readyQueue = new ProcessQueue(new Comparator<Process>() {
+            @Override
+            public int compare(Process left, Process right) {
+                return 1;
+            }
+        }); 
+        }
+        else //for first come first served, use the priority/arrival sorted queue
+        {
+          this.readyQueue = new ProcessQueue();  
+        }
+        
         //use the unique constructor to sort by finish time.
         this.finishedQueue = new ProcessQueue(new Comparator<Process>() {
             @Override
@@ -111,7 +128,17 @@ public class CPU implements Runnable{
         return this.readyQueue;
     }
     
-    public void run(){
+    @Override
+    public void run(){ 
+        if(this.id == 2){
+          this.roundRobin();  
+        }
+        else{
+           this.fcfs(); 
+        }
+    }
+    
+    public void fcfs(){
         //While the CPU isn't paused...
         //while(!o.getPaused()){
         while(true){
@@ -163,7 +190,71 @@ public class CPU implements Runnable{
                     return;
                 }
             }
-        }
-        
+        } 
+    }
+//    
+    
+    public void roundRobin(){
+        //While the CPU isn't paused...
+        while(true){
+            if (readyQueue.size() > 0) {
+                
+                if(this.curProcess == null){ //if we don't currently have a process
+                    this.curProcess = readyQueue.dequeue(); //grab the first process from the ready queue
+                }
+                if(this.quantumRemaining <= 0){ //if the time quantum has expired...
+                    if(this.curProcess.getTimeRemaining() > 0){ //if there is still time left on the current process
+                        readyQueue.enqueue(this.curProcess);            //add the current process to the back of the queue
+                    }
+                    else // if the current process has finished
+                    {
+                      this.curProcess.setFinishTime(o.getCurTime());    //set finish time
+                      finishedQueue.enqueue(this.curProcess);           //add to the finished queue (insead of the ready queue)
+                    }
+                    
+                    this.curProcess = readyQueue.dequeue();             // and get the next process from the front of the list
+                    try {
+                        System.out.println("  ...  cpu" + this.id + " thread starting " + this.curProcess.getProcessID() + ", working for " + this.curProcess.getTimeRemaining() + " time units.");
+                    }
+                    catch(NullPointerException ex) {   
+                    }
+                    this.quantumRemaining = this.timeQuantum; //reset time quantum
+                }
+                else if(this.curProcess.getTimeRemaining() <= 0){// if we have finished the current process in the middle of a time quantum
+                    this.curProcess.setFinishTime(o.getCurTime());  //set the finish time
+                    finishedQueue.enqueue(this.curProcess);         //add to the finished queue (instead of the ready queue)
+                    this.curProcess = readyQueue.dequeue();         //get a new process from the ready queue
+                    try {
+                        System.out.println("  ...  cpu" + this.id + " thread starting " + this.curProcess.getProcessID() + ", working for " + this.timeRemaining + " time units.");
+                    }
+                    catch(NullPointerException ex) {   
+                    }
+                    this.timeRemaining = this.timeQuantum; //reset time quantum
+                }
+                else //we are in the middle of a time quantum and can continue processing
+                {
+                    try {
+                    Thread.sleep((long)(o.getTimeUnitLength()));
+       
+                    this.curProcess.setTimeRemaining(this.curProcess.getTimeRemaining() - 1); //decrement the process's time remaining
+                    this.quantumRemaining--;                                                  //decrement the time quantum
+                    } 
+                    catch (InterruptedException ex) {
+                        return;
+                    }
+                }
+            }
+            //well, there are no processes in the ready queue, so lets wait until there is one there
+            else {
+                try {
+                    Thread.sleep((long)(o.getTimeUnitLength())); 
+                } 
+                catch (InterruptedException ex) {
+                // TBD catch and deal with exception ere
+                    //System.out.println("Exception caught: " + ex + " with " + this.timeRemaining + " time remaining");
+                    return;
+                }
+            }
+        } 
     }
 }
