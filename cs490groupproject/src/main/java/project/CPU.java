@@ -197,7 +197,7 @@ public class CPU implements Runnable{
     public void roundRobin(){
         //While the CPU isn't paused...
         while(true){
-            if (readyQueue.size() > 0) {
+            if (readyQueue.size() > 0 || this.curProcess != null) {
                 
                 if(this.curProcess == null){ //if we don't currently have a process
                     this.curProcess = readyQueue.dequeue(); //grab the first process from the ready queue
