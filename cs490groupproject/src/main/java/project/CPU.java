@@ -18,6 +18,7 @@ public class CPU implements Runnable{
     private Process curProcess;
     private int timeRemaining;
     private int id;
+    private double averageNTAT;
     
     public CPU(int id, OS o) {
         this.id = id;
@@ -99,6 +100,18 @@ public class CPU implements Runnable{
         //status += "Current time = " + curTime + " units";
         
         return status;
+    }
+    
+    public double getAverageNTAT(){
+        averageNTAT=0;
+        if (finishedQueue.getProcess() != null)
+        {
+            for (Process process : finishedQueue.getProcess())
+            {
+                averageNTAT+=process.getNormalTurnTime();
+            }
+        }
+        return averageNTAT;
     }
     
     public int getID() {

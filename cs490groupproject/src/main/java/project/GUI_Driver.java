@@ -578,8 +578,8 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
         table_readyQueueHRRN.setText(this.os.getCPUList().get(0).displayQueueState());
         table_reportHRRN.setText(this.os.getCPUList().get(0).displayFinished());
         table_reportRR.setText(this.os.getCPUList().get(1).displayFinished());
-        averagenTATHRRN.setText(String.format("%.2f",(float)this.os.getCPUList().get(0).getFinishedQueue().size() / this.os.getCurTime()));
-        averagenTATRR.setText(String.format("%.2f",(float)this.os.getCPUList().get(1).getFinishedQueue().size() / this.os.getCurTime()));
+        averagenTATHRRN.setText(String.format("%.2f",(float)this.os.getCPUList().get(0).getAverageNTAT() / (float)this.os.getCPUList().get(0).getFinishedQueue().size()));
+        averagenTATRR.setText(String.format("%.2f",(float)this.os.getCPUList().get(1).getAverageNTAT() / (float)this.os.getCPUList().get(1).getFinishedQueue().size()));
         
     }
      
