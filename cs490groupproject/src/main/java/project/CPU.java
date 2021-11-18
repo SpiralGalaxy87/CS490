@@ -12,6 +12,7 @@ import java.util.Comparator;
  * @author Annaleise, Jake, Benjamin
  */
 public class CPU implements Runnable{
+    private int curTime;
     private OS o;
     private ProcessQueue readyQueue;
     private ProcessQueue  finishedQueue;
@@ -22,10 +23,11 @@ public class CPU implements Runnable{
     private int quantumRemaining; //used by rr. ammount of time remaining in current quantum.
     
     public CPU(int id, OS o) {
+        this.curTime = 0;
         this.id = id;
         this.o = o;
         this.timeRemaining = 0;
-        this.timeQuantum = 10; //later set this with user input;
+        this.timeQuantum = 2; //later set this with user input;
         this.quantumRemaining = this.timeQuantum;
         
         if(this.id == 2){ //for round robin, always insert at the back of the queue
@@ -159,6 +161,7 @@ public class CPU implements Runnable{
                 while(this.timeRemaining > 0){
                     try {
                         Thread.sleep((long)(o.getTimeUnitLength()));
+                        this.curTime++;
                         this.timeRemaining--;
                     } 
                     catch (InterruptedException ex) {
@@ -167,7 +170,7 @@ public class CPU implements Runnable{
                 }
                 //once the time remaining has lapsed to zero, set the process' finish time and add to finished list.
                 try {
-                    this.curProcess.setFinishTime(o.getCurTime());
+                    this.curProcess.setFinishTime(this.curTime - 1);
                     
                     //set turnaround time
                     //set normalized turnaround time: turnaround / service
@@ -182,7 +185,7 @@ public class CPU implements Runnable{
             else {
                 try {
                     Thread.sleep((long)(o.getTimeUnitLength()));
-                    
+                    this.curTime++;
                 } 
                 catch (InterruptedException ex) {
                 // TBD catch and deal with exception ere
@@ -197,22 +200,22 @@ public class CPU implements Runnable{
     public void roundRobin(){
         //While the CPU isn't paused...
         while(true){
-            if (readyQueue.size() > 0 || this.curProcess != null) {
+            if (readyQueue.size() > 0 || this.curProcess != null) { //if there are processes in the queue, or we currently have a process we are working on...
                 
-                if(this.curProcess == null){ //if we don't currently have a process
+                if(this.curProcess == null){ //if we don't currently have a process...
                     this.curProcess = readyQueue.dequeue(); //grab the first process from the ready queue
                 }
                 if(this.quantumRemaining <= 0){ //if the time quantum has expired...
-                    if(this.curProcess.getTimeRemaining() > 0){ //if there is still time left on the current process
+                    if(this.curProcess.getTimeRemaining() > 0){         //if there is still time left on the current process
                         readyQueue.enqueue(this.curProcess);            //add the current process to the back of the queue
                     }
-                    else // if the current process has finished
+                    else                                                //if the current process has finished
                     {
-                      this.curProcess.setFinishTime(o.getCurTime());    //set finish time
+                      this.curProcess.setFinishTime(this.curTime);    //set finish time
                       finishedQueue.enqueue(this.curProcess);           //add to the finished queue (insead of the ready queue)
                     }
                     
-                    this.curProcess = readyQueue.dequeue();             // and get the next process from the front of the list
+                    this.curProcess = readyQueue.dequeue();             //and get the next process from the front of the list
                     try {
                         System.out.println("  ...  cpu" + this.id + " thread starting " + this.curProcess.getProcessID() + ", working for " + this.curProcess.getTimeRemaining() + " time units.");
                     }
@@ -221,7 +224,7 @@ public class CPU implements Runnable{
                     this.quantumRemaining = this.timeQuantum; //reset time quantum
                 }
                 else if(this.curProcess.getTimeRemaining() <= 0){// if we have finished the current process in the middle of a time quantum
-                    this.curProcess.setFinishTime(o.getCurTime());  //set the finish time
+                    this.curProcess.setFinishTime(this.curTime);  //set the finish time
                     finishedQueue.enqueue(this.curProcess);         //add to the finished queue (instead of the ready queue)
                     this.curProcess = readyQueue.dequeue();         //get a new process from the ready queue
                     try {
@@ -234,10 +237,11 @@ public class CPU implements Runnable{
                 else //we are in the middle of a time quantum and can continue processing
                 {
                     try {
-                    Thread.sleep((long)(o.getTimeUnitLength()));
-       
-                    this.curProcess.setTimeRemaining(this.curProcess.getTimeRemaining() - 1); //decrement the process's time remaining
-                    this.quantumRemaining--;                                                  //decrement the time quantum
+                        Thread.sleep((long)(o.getTimeUnitLength()));
+                        this.curTime++;
+
+                        this.curProcess.setTimeRemaining(this.curProcess.getTimeRemaining() - 1); //decrement the process's time remaining
+                        this.quantumRemaining--;                                                  //decrement the time quantum
                     } 
                     catch (InterruptedException ex) {
                         return;
@@ -247,7 +251,8 @@ public class CPU implements Runnable{
             //well, there are no processes in the ready queue, so lets wait until there is one there
             else {
                 try {
-                    Thread.sleep((long)(o.getTimeUnitLength())); 
+                    Thread.sleep((long)(o.getTimeUnitLength()));
+                    this.curTime++;
                 } 
                 catch (InterruptedException ex) {
                 // TBD catch and deal with exception ere
