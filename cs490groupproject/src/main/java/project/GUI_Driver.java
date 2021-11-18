@@ -562,7 +562,7 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
     */ 
     private void timeStep(){
         
-        var_curTime.setText(Integer.toString(os.getCurTime()));
+        var_curTime.setText(Integer.toString(os.getCPUList().get(0).getCurTime()));
         //check time, if anything in future queue has this time, move it to the readyQueue
 //        while(os.getFutureQueue().size() > 0 && os.getFutureQueue().peek().getArrivalTime()==os.getCurTime()) {
 //            for (CPU cpu : os.getCPUList()) {
