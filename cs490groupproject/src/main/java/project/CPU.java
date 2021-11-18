@@ -14,6 +14,7 @@ import java.util.Comparator;
 public class CPU implements Runnable{
     private int curTime;
     private OS o;
+    private ProcessQueue futureQueue;
     private ProcessQueue readyQueue;
     private ProcessQueue  finishedQueue;
     private Process curProcess;
@@ -63,7 +64,33 @@ public class CPU implements Runnable{
                 return returnVal;
             }
         });
+        
+        //use the unique constructor to sort by arrival time.
+        this.futureQueue = new ProcessQueue(new Comparator<Process>() {
+            @Override
+            public int compare(Process left, Process right) {
+                int returnVal;
+                if (left.getArrivalTime() < right.getArrivalTime())
+                {
+                    returnVal = -1;
+                }
+                else if (left.getArrivalTime() > right.getArrivalTime())
+                {
+                    returnVal = 1;
+                }
+                else
+                {
+                    returnVal = 0;
+                }
+                return returnVal;
+            }
+        });
     }
+    
+    public ProcessQueue getFutureQueue(){
+        return this.futureQueue;
+    }
+    
     public ProcessQueue getFinishedQueue(){
         
         return this.finishedQueue;
@@ -144,6 +171,9 @@ public class CPU implements Runnable{
         //While the CPU isn't paused...
         //while(!o.getPaused()){
         while(true){
+            while(this.futureQueue.size() > 0 && this.futureQueue.peek().getArrivalTime()==this.curTime) {
+                this.readyQueue.enqueue(this.futureQueue.dequeue());
+            }      
             //if the ready queue is not empty, grab it!
             if (readyQueue.size() > 0) {
                 //if the CPU isn't currently working on a process... grab the next one available.
@@ -200,6 +230,9 @@ public class CPU implements Runnable{
     public void roundRobin(){
         //While the CPU isn't paused...
         while(true){
+            while(this.futureQueue.size() > 0 && this.futureQueue.peek().getArrivalTime()==this.curTime) {
+                this.readyQueue.enqueue(this.futureQueue.dequeue());
+            } 
             if (readyQueue.size() > 0 || this.curProcess != null) { //if there are processes in the queue, or we currently have a process we are working on...
                 
                 if(this.curProcess == null){ //if we don't currently have a process...

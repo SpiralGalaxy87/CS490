@@ -463,8 +463,8 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
 
     private void button_startPauseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_startPauseActionPerformed
         // TODO add your handling code here:
-        if (os.getPaused()) lbl_pause_play.setText("System Running");
-        else lbl_pause_play.setText("System Paused");
+        if (os.getPaused()) lbl_pause_play.setText("System Paused");
+        else lbl_pause_play.setText("System Running");
         os.setPaused(!os.getPaused());
         if(!os.getPaused()){
             os.stopCPUs();
@@ -564,12 +564,12 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
         
         var_curTime.setText(Integer.toString(os.getCurTime()));
         //check time, if anything in future queue has this time, move it to the readyQueue
-        while(os.getFutureQueue().size() > 0 && os.getFutureQueue().peek().getArrivalTime()==os.getCurTime()) {
-            for (CPU cpu : os.getCPUList()) {
-                cpu.getReadyQueue().enqueue(os.getFutureQueue().peek());
-            }
-            os.getFutureQueue().dequeue();
-        }        
+//        while(os.getFutureQueue().size() > 0 && os.getFutureQueue().peek().getArrivalTime()==os.getCurTime()) {
+//            for (CPU cpu : os.getCPUList()) {
+//                cpu.getReadyQueue().enqueue(os.getFutureQueue().peek());
+//            }
+//            os.getFutureQueue().dequeue();
+//        }        
             
         cpu1_StatusRR.setText(this.os.getCPUList().get(1).displayStatus());
         cpu2_StatusHRRN.setText(this.os.getCPUList().get(0).displayStatus());
@@ -593,7 +593,7 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
             this.timeStep();
             try {
                 Thread.sleep((long)(os.getTimeUnitLength()));
-                os.incrementCurTime();
+                //os.incrementCurTime();
             } 
             catch (InterruptedException ex) {
             // TBD catch and deal with exception ere

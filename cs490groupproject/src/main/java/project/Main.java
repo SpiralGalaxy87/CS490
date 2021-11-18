@@ -50,6 +50,13 @@ public class Main {
         //ProcessQueue processQueue = new ProcessQueue();
         os = new OS(800);
         
+        //create CPUs
+        CPU cpu1 = new CPU(1, os);
+        CPU cpu2 = new CPU(2, os);
+        
+        os.addCPU(cpu1);
+        os.addCPU(cpu2);
+        
         
         /* Read in file to create processes and store in the ProcessQueue */
         // pass the path to the file as a parameter, create scanner
@@ -85,17 +92,16 @@ public class Main {
             int priority = lineSc.nextInt();
             
             Process newProcess = new Process(arrivalTime, processID, serviceTime, priority);
-            os.getFutureQueue().enqueue(newProcess);
+            
+            for (CPU cpu : os.getCPUList()) {
+                cpu.getFutureQueue().enqueue(newProcess);
+            }
         }
         
         //test
         //System.out.println(queue1.display());
 
-        CPU cpu1 = new CPU(1, os);
-        CPU cpu2 = new CPU(2, os);
-        
-        os.addCPU(cpu1);
-        os.addCPU(cpu2);
+       
         
         gui = new GUI_Driver(os);
         
