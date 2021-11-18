@@ -112,7 +112,6 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
         table_reportHRRN.setEditable(false);
         table_reportHRRN.setColumns(1);
         table_reportHRRN.setFont(new java.awt.Font("Courier New", 0, 11)); // NOI18N
-        table_reportHRRN.setLineWrap(true);
         table_reportHRRN.setRows(1);
         jScrollPane3.setViewportView(table_reportHRRN);
 
@@ -244,7 +243,6 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
         table_reportRR.setEditable(false);
         table_reportRR.setColumns(1);
         table_reportRR.setFont(new java.awt.Font("Courier New", 0, 11)); // NOI18N
-        table_reportRR.setLineWrap(true);
         table_reportRR.setRows(1);
         jScrollPane6.setViewportView(table_reportRR);
 
