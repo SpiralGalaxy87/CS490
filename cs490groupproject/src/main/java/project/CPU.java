@@ -30,12 +30,12 @@ public class CPU implements Runnable{
         this.quantumRemaining = this.timeQuantumLength;
         
         if(this.id == 2){ //for round robin, always insert at the back of the queue
-           this.readyQueue = new ProcessQueue(new Comparator<Process>() {
-            @Override
-            public int compare(Process left, Process right) {
-                return 1;
-            }
-        }); 
+            this.readyQueue = new ProcessQueue(new Comparator<Process>() {
+                @Override
+                public int compare(Process left, Process right) {
+                    return 1;
+                }
+            }); 
         }
         else if (this.id == 1)
         {
