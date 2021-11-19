@@ -12,26 +12,31 @@ import java.util.Comparator;
  * @author Annaleise, Jake, Benjamin
  */
 public class CPU implements Runnable{
+    private int curTime;
     private OS o;
+    private ProcessQueue futureQueue;
     private ProcessQueue readyQueue;
-    private ProcessQueue  finishedQueue;
+    private ProcessQueue finishedQueue;
     private Process curProcess;
-    private int timeRemaining;
     private int id;
+    private int timeQuantumLength; //used by rr. length of time quantum, set by user.  
+    private int quantumRemaining; //used by rr. ammount of time remaining in current quantum.
+    private double averageNTAT;
     
     public CPU(int id, OS o) {
+        this.curTime = 0;
         this.id = id;
         this.o = o;
         this.timeQuantumLength = 2; //later set this with user input;
         this.quantumRemaining = this.timeQuantumLength;
         
         if(this.id == 2){ //for round robin, always insert at the back of the queue
-            this.readyQueue = new ProcessQueue(new Comparator<Process>() {
-                @Override
-                public int compare(Process left, Process right) {
-                    return 1;
-                }
-            }); 
+           this.readyQueue = new ProcessQueue(new Comparator<Process>() {
+            @Override
+            public int compare(Process left, Process right) {
+                return 1;
+            }
+        }); 
         }
         else //for first come first served, use the priority/arrival sorted queue
         {
@@ -58,7 +63,37 @@ public class CPU implements Runnable{
                 return returnVal;
             }
         });
+        
+        //use the unique constructor to sort by arrival time.
+        this.futureQueue = new ProcessQueue(new Comparator<Process>() {
+            @Override
+            public int compare(Process left, Process right) {
+                int returnVal;
+                if (left.getArrivalTime() < right.getArrivalTime())
+                {
+                    returnVal = -1;
+                }
+                else if (left.getArrivalTime() > right.getArrivalTime())
+                {
+                    returnVal = 1;
+                }
+                else
+                {
+                    returnVal = 0;
+                }
+                return returnVal;
+            }
+        });
     }
+    
+    public int getCurTime(){
+        return this.curTime;
+    }
+    
+    public ProcessQueue getFutureQueue(){
+        return this.futureQueue;
+    }
+    
     public ProcessQueue getFinishedQueue(){
         
         return this.finishedQueue;
@@ -83,7 +118,7 @@ public class CPU implements Runnable{
         if (curProcess != null)
         {
             status += "Exec: Process " + curProcess.getProcessID() + "\n";
-            status += "Time Remaining = " + timeRemaining + "\n";
+            status += "Time Remaining = " + this.curProcess.getTimeRemaining() + "\n";
         }
         else
         {
@@ -113,6 +148,18 @@ public class CPU implements Runnable{
         //status += "Current time = " + curTime + " units";
         
         return status;
+    }
+    
+    public double getAverageNTAT(){
+        averageNTAT=0;
+        if (finishedQueue.getProcess() != null)
+        {
+            for (Process process : finishedQueue.getProcess())
+            {
+                averageNTAT+=process.getNormalTurnTime();
+            }
+        }
+        return averageNTAT;
     }
     
     public int getID() {
@@ -176,6 +223,44 @@ public class CPU implements Runnable{
                       finishedQueue.enqueue(this.curProcess);           //add to the finished queue (insead of the ready queue)
                     }
                     
+                    this.curProcess = readyQueue.dequeue();             //and get the next process from the front of the list
+                    try {
+                        System.out.println("  ...  cpu" + this.id + " thread starting " + this.curProcess.getProcessID() + ", working for " + this.curProcess.getTimeRemaining() + " time units.");
+                    }
+                    catch(NullPointerException ex) {   
+                    }
+                    this.quantumRemaining = this.timeQuantumLength; //reset time quantum
+                }
+                else if(this.curProcess.getTimeRemaining() <= 0){// if we have finished the current process in the middle of a time quantum
+                    this.curProcess.setFinishTime(this.curTime);  //set the finish time
+                    finishedQueue.enqueue(this.curProcess);         //add to the finished queue (instead of the ready queue)
+                    this.curProcess = readyQueue.dequeue();         //get a new process from the ready queue
+                    try {
+                        System.out.println("  ...  cpu" + this.id + " thread starting " + this.curProcess.getProcessID() + ", working for " + this.curProcess.getTimeRemaining() + " time units.");
+                    }
+                    catch(NullPointerException ex) {   
+                    }
+                    this.quantumRemaining = this.timeQuantumLength; //reset time quantum
+                }
+                else //we are in the middle of a time quantum and can continue processing
+                {
+                    try {
+                        Thread.sleep((long)(o.getTimeUnitLength()));
+                        this.curTime++;
+
+                        this.curProcess.setTimeRemaining(this.curProcess.getTimeRemaining() - 1); //decrement the process's time remaining
+                        this.quantumRemaining--;                                                  //decrement the time quantum
+                    } 
+                    catch (InterruptedException ex) {
+                        return;
+                    }
+                }
+            }
+            //well, there are no processes in the ready queue, so lets wait until there is one there
+            else {
+                try {
+                    Thread.sleep((long)(o.getTimeUnitLength()));
+                    this.curTime++;
                 } 
                 catch (InterruptedException ex) {
                 // TBD catch and deal with exception ere
@@ -183,7 +268,6 @@ public class CPU implements Runnable{
                     return;
                 }
             }
-        }
-        
+        } 
     }
 }

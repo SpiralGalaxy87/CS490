@@ -2,8 +2,6 @@ package project;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 
 
@@ -113,7 +111,6 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
         table_reportHRRN.setEditable(false);
         table_reportHRRN.setColumns(1);
         table_reportHRRN.setFont(new java.awt.Font("Courier New", 0, 11)); // NOI18N
-        table_reportHRRN.setLineWrap(true);
         table_reportHRRN.setRows(1);
         jScrollPane3.setViewportView(table_reportHRRN);
 
@@ -245,7 +242,6 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
         table_reportRR.setEditable(false);
         table_reportRR.setColumns(1);
         table_reportRR.setFont(new java.awt.Font("Courier New", 0, 11)); // NOI18N
-        table_reportRR.setLineWrap(true);
         table_reportRR.setRows(1);
         jScrollPane6.setViewportView(table_reportRR);
 
@@ -568,8 +564,8 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
         table_readyQueueHRRN.setText(this.os.getCPUList().get(0).displayQueueState());
         table_reportHRRN.setText(this.os.getCPUList().get(0).displayFinished());
         table_reportRR.setText(this.os.getCPUList().get(1).displayFinished());
-        averagenTATHRRN.setText(String.format("%.2f",(float)this.os.getCPUList().get(0).getFinishedQueue().size() / this.os.getCurTime()));
-        averagenTATRR.setText(String.format("%.2f",(float)this.os.getCPUList().get(1).getFinishedQueue().size() / this.os.getCurTime()));
+        averagenTATHRRN.setText(String.format("%.2f",(float)this.os.getCPUList().get(0).getAverageNTAT() / (float)this.os.getCPUList().get(0).getFinishedQueue().size()));
+        averagenTATRR.setText(String.format("%.2f",(float)this.os.getCPUList().get(1).getAverageNTAT() / (float)this.os.getCPUList().get(1).getFinishedQueue().size()));
         
     }
     
