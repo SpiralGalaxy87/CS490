@@ -52,10 +52,10 @@ public class Main {
         
         //create CPUs
         CPU cpu1 = new CPU(1, os);
-        CPU cpu2 = new CPU(2, os);
+        //CPU cpu2 = new CPU(2, os);
         
         os.addCPU(cpu1);
-        os.addCPU(cpu2);
+        //os.addCPU(cpu2);
         
         
         /* Read in file to create processes and store in the ProcessQueue */
@@ -101,6 +101,9 @@ public class Main {
         gui = new GUI_Driver(os);
         
         gui.setVisible(true);
+        
+        os.setGUI(gui);
+        
     }
     
     public Main()

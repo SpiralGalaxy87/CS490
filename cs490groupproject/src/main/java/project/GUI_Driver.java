@@ -22,8 +22,10 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
      */
     public GUI_Driver(OS os) {
         this.os = os;
+        
         //this.timeUnitLength = os.getTimeUnitLength();
         initComponents();
+        this.startGUIUpdater();
     }
 
     /**
@@ -468,11 +470,9 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
         os.setPaused(!os.getPaused());
         if(!os.getPaused()){
             os.stopCPUs();
-            this.stopGUIUpdater();
         }
         else {
             os.startCPUs();
-            this.startGUIUpdater();
         }
     }//GEN-LAST:event_button_startPauseActionPerformed
 
@@ -571,15 +571,14 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
 //            os.getFutureQueue().dequeue();
 //        }        
             
-        cpu2_StatusRR.setText(this.os.getCPUList().get(1).displayStatus());
+        //cpu2_StatusRR.setText(this.os.getCPUList().get(1).displayStatus());
         cpu1_StatusHRRN.setText(this.os.getCPUList().get(0).displayStatus());
-        cpu2_StatusRR.setText(this.os.getCPUList().get(1).displayStatus());
-        table_readyQueueRR.setText(this.os.getCPUList().get(1).displayQueueState());
+        //table_readyQueueRR.setText(this.os.getCPUList().get(1).displayQueueState());
         table_readyQueueHRRN.setText(this.os.getCPUList().get(0).displayQueueState());
         table_reportHRRN.setText(this.os.getCPUList().get(0).displayFinished());
-        table_reportRR.setText(this.os.getCPUList().get(1).displayFinished());
+        //table_reportRR.setText(this.os.getCPUList().get(1).displayFinished());
         averagenTATHRRN.setText(String.format("%.2f",(float)this.os.getCPUList().get(0).getSumNTAT() / (float)this.os.getCPUList().get(0).getFinishedQueue().size()));
-        averagenTATRR.setText(String.format("%.2f",(float)this.os.getCPUList().get(1).getSumNTAT() / (float)this.os.getCPUList().get(1).getFinishedQueue().size()));
+        //averagenTATRR.setText(String.format("%.2f",(float)this.os.getCPUList().get(1).getSumNTAT() / (float)this.os.getCPUList().get(1).getFinishedQueue().size()));
         
     }
      
@@ -592,12 +591,7 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
         while(true){
             this.timeStep();
             try {
-                Thread.sleep((long)(os.getTimeUnitLength()));
-                
-                if(!this.os.getCPUList().get(0).isFinished() || !this.os.getCPUList().get(1).isFinished() || this.os.getFutureQueue().size() > 0)
-                {
-                    os.incrementCurTime();
-                }
+                Thread.sleep(10);
             } 
             catch (InterruptedException ex) {
             // TBD catch and deal with exception ere

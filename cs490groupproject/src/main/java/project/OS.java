@@ -35,14 +35,13 @@ public class OS {
             return returnVal;
         } 
     };
-    
     private int curTime;
-    
     //private ProcessQueue readyQueue;
     private ProcessQueue futureQueue;
     //private ProcessQueue  finishedProcesses;
     private int timeUnitLength;
     private boolean isPaused;
+    private GUI_Driver gui;
     private ArrayList<CPU> cpuList = new ArrayList<>();
     //private Thread cpuThread; //later we can make this a list of cpuThreads
     private ArrayList<Thread> cpuThreadList = new ArrayList<>();
@@ -157,5 +156,12 @@ public class OS {
     }
     public ArrayList<Thread> getCPUThreadList(){
         return this.cpuThreadList;
+    }
+    
+    public GUI_Driver getGUI() {
+        return this.gui;
+    }
+    public void setGUI(GUI_Driver gui) {
+        this.gui = gui;
     }
 }
