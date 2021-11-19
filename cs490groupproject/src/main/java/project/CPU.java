@@ -22,8 +22,22 @@ public class CPU implements Runnable{
     public CPU(int id, OS o) {
         this.id = id;
         this.o = o;
-        this.timeRemaining = 0;
-        this.readyQueue = new ProcessQueue();
+        this.timeQuantumLength = 2; //later set this with user input;
+        this.quantumRemaining = this.timeQuantumLength;
+        
+        if(this.id == 2){ //for round robin, always insert at the back of the queue
+            this.readyQueue = new ProcessQueue(new Comparator<Process>() {
+                @Override
+                public int compare(Process left, Process right) {
+                    return 1;
+                }
+            }); 
+        }
+        else //for first come first served, use the priority/arrival sorted queue
+        {
+          this.readyQueue = new ProcessQueue();  
+        }
+        
         //use the unique constructor to sort by finish time.
         this.finishedQueue = new ProcessQueue(new Comparator<Process>() {
             @Override
@@ -110,51 +124,57 @@ public class CPU implements Runnable{
         
         return this.readyQueue;
     }
-    
-    public void run(){
-        //While the CPU isn't paused...
-        //while(!o.getPaused()){
-        while(true){
-            //if the ready queue is not empty, grab it!
-            if (readyQueue.size() > 0) {
-                //if the CPU isn't currently working on a process... grab the next one available.
-                if(this.timeRemaining <= 0){
-                    this.curProcess = readyQueue.dequeue();
-                    try {
-                        this.timeRemaining = this.curProcess.getServiceTime();
-                        System.out.println("  ...  cpu" + this.id + " thread starting " + this.curProcess.getProcessID() + ", working for " + this.timeRemaining + " time units.");
-                    }
-                    catch(NullPointerException ex) {
-                        
-                    }
-                }
-                //with the process grabbed, sleep for each time unit
-                while(this.timeRemaining > 0){
-                    try {
-                        Thread.sleep((long)(o.getTimeUnitLength()));
-                        this.timeRemaining--;
-                    } 
-                    catch (InterruptedException ex) {
-                        return;
-                    }
-                }
-                //once the time remaining has lapsed to zero, set the process' finish time and add to finished list.
-                try {
-                    this.curProcess.setFinishTime(o.getCurTime());
-                    
-                    //set turnaround time
-                    //set normalized turnaround time: turnaround / service
-                    
-                    finishedQueue.enqueue(this.curProcess);
-                    curProcess = null;
-                }
-                catch(NullPointerException ex) {
-                }
+     
+    public void step(){
+        while(futureQueue.size() > 0 && futureQueue.peek().getArrivalTime()==o.getCurTime()) {
+            readyQueue.enqueue(futureQueue.dequeue());
+        }
+        if(this.id == 1){
+                //If the readyQueue is not empty, and we don't have a current process, grab the next one.
+            if((curProcess == null || curProcess.getTimeRemaining() == 0) && readyQueue.size() > 0) {
+                curProcess = readyQueue.dequeue();
+                System.out.println("  ...  cpu" + this.id + " starting work on " + curProcess.getProcessID() + ", working for " + curProcess.getTimeRemaining() + " time units.");
             }
-            //well, nothing here, so lets wait until there is one there
-            else {
-                try {
-                    Thread.sleep((long)(o.getTimeUnitLength()));
+            try {
+                Thread.sleep((long)(o.getTimeUnitLength()));
+            } catch (InterruptedException ex) {
+                return;
+            }
+            if (curProcess != null) {
+                curProcess.setTimeRemaining(curProcess.getTimeRemaining() - 1);
+            }
+            if (curProcess != null && curProcess.getTimeRemaining() == 0) {
+                curProcess.setFinishTime(o.getCurTime()+1);
+                finishedQueue.enqueue(this.curProcess);
+                curProcess = null;
+            } 
+            
+        }
+        else{
+            //roundRobin_step();
+        }
+    }
+    
+    public void roundRobin(){
+        //While the CPU isn't paused...
+        while(true){
+            while(this.futureQueue.size() > 0 && this.futureQueue.peek().getArrivalTime()==this.curTime) {
+                this.readyQueue.enqueue(this.futureQueue.dequeue());
+            } 
+            if (readyQueue.size() > 0 || this.curProcess != null) { //if there are processes in the queue, or we currently have a process we are working on...
+                
+                if(this.curProcess == null){ //if we don't currently have a process...
+                    this.curProcess = readyQueue.dequeue(); //grab the first process from the ready queue
+                }
+                if(this.quantumRemaining <= 0){ //if the time quantum has expired...
+                    if(this.curProcess.getTimeRemaining() > 0){         //if there is still time left on the current process
+                        readyQueue.enqueue(this.curProcess);            //add the current process to the back of the queue
+                    }
+                    else                                                //if the current process has finished
+                    {
+                      this.curProcess.setFinishTime(this.curTime);    //set finish time
+                      finishedQueue.enqueue(this.curProcess);           //add to the finished queue (insead of the ready queue)
+                    }
                     
                 } 
                 catch (InterruptedException ex) {

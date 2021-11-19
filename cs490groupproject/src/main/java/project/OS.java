@@ -14,7 +14,7 @@ import java.util.*;
  * @author Annaleise, Benjamin
  * 
  */
-public class OS {
+public class OS implements Runnable {
     
     private Comparator<Process> arrivalComparator = new Comparator<Process>() {
         @Override
@@ -37,26 +37,17 @@ public class OS {
     };
     
     private int curTime;
-    
-    //private ProcessQueue readyQueue;
     private ProcessQueue futureQueue;
-    //private ProcessQueue  finishedProcesses;
     private int timeUnitLength;
     private boolean isPaused;
     private ArrayList<CPU> cpuList = new ArrayList<>();
-    //private Thread cpuThread; //later we can make this a list of cpuThreads
     private ArrayList<Thread> cpuThreadList = new ArrayList<>();
 
     public OS(int timeUnitLength) {
         
         this.timeUnitLength = timeUnitLength;
-        
-        //start out paused
-        this.isPaused = false;
-        //time starts at 0
+        this.isPaused = true;
         this.curTime = 0;
-        
-        
         
         //use the unique constructor to sort by arrival time.
         this.futureQueue = new ProcessQueue(new Comparator<Process>() {
@@ -85,9 +76,6 @@ public class OS {
     public void setTimeUnitLength(int length)
     {
         this.timeUnitLength = length;
-        //for (CPU i : cpuList) {
-        //    i.setTimeUnitLength(length);
-        //}
     }
     public int getTimeUnitLength() {
         return this.timeUnitLength;
@@ -99,9 +87,7 @@ public class OS {
     }
     
     public int incrementCurTime(){
-        this.curTime++;
-        
-        return curTime;
+        return ++curTime;
     }
     
     public ProcessQueue getFutureQueue(){
@@ -118,31 +104,26 @@ public class OS {
     //this method BEGINS the multiple threads needed to run the CPUs.
     public void startCPUs()
     {
+        Thread t = new Thread(this);    // add start thread for gui updates
+        t.start();
+        System.out.println("Started the OS thread");
         
-        //this just starts the single CPU right now. 
-        //later this should loop to start up threads for every CPU in cpuList
-        for (CPU cpu : cpuList) {
-            Thread t = new Thread(cpu);
-            this.cpuThreadList.add(t);
-            t.start();
-            System.out.println("Started thread for CPU " + cpu.getID());
-        }
     }
-    //this method STOPS the multiple threads running the CPUs.
-    public void stopCPUs()
-    {
-        for (Thread t : cpuThreadList)
-        {
-            t.interrupt();
-        }
-        //this.cpuThread.interrupt();
-    }   
     
-    
-    //this is used to display the processes that have arrived but haven't been run yet. Ready. Waiting.
-    
-    //this is used to display the finished processes and all their stats.
-    
+    @Override
+    public void run(){
+        while(true) {
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException ex) { }
+            if (!isPaused) {
+                for (CPU cpu : cpuList) {
+                    cpu.step();
+                }
+                incrementCurTime();
+            }
+        }   
+    }
     
     public void setPaused(boolean isPaused){
         this.isPaused = isPaused;
