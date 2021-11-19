@@ -74,6 +74,14 @@ public class ProcessQueue {
         return processes.remove(p);
     }
     
+    public void emptyQueue()
+    {
+        for (Process p : processes)
+        {
+            processes.remove(p);
+        }
+    }
+    
     /**
      * Returns an array containing all of the elements in this queue, in proper
      * sequence.

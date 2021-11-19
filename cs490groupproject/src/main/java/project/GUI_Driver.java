@@ -38,7 +38,7 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
         button_startPause = new javax.swing.JToggleButton();
         waitingProcessQueueLabelHRRN = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        cpu1_StatusRR = new javax.swing.JTextArea();
+        cpu2_StatusRR = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
         table_reportHRRN = new javax.swing.JTextArea();
         lbl_timeUnit = new javax.swing.JLabel();
@@ -49,7 +49,7 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
         lbl_cpuRR = new javax.swing.JLabel();
         lbl_cpu2HRRN = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
-        cpu2_StatusHRRN = new javax.swing.JTextArea();
+        cpu1_StatusHRRN = new javax.swing.JTextArea();
         lbl_processNameHRRN = new javax.swing.JLabel();
         lbl_serviceTimeHRRN = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
@@ -98,16 +98,16 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
         waitingProcessQueueLabelHRRN.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         waitingProcessQueueLabelHRRN.setText("OS Ready Queue");
 
-        cpu1_StatusRR.setEditable(false);
-        cpu1_StatusRR.setColumns(20);
-        cpu1_StatusRR.setFont(new java.awt.Font("Courier New", 0, 11)); // NOI18N
-        cpu1_StatusRR.setLineWrap(true);
-        cpu1_StatusRR.setRows(5);
-        cpu1_StatusRR.setWrapStyleWord(true);
-        cpu1_StatusRR.setAutoscrolls(false);
-        cpu1_StatusRR.setBorder(null);
+        cpu2_StatusRR.setEditable(false);
+        cpu2_StatusRR.setColumns(20);
+        cpu2_StatusRR.setFont(new java.awt.Font("Courier New", 0, 11)); // NOI18N
+        cpu2_StatusRR.setLineWrap(true);
+        cpu2_StatusRR.setRows(5);
+        cpu2_StatusRR.setWrapStyleWord(true);
+        cpu2_StatusRR.setAutoscrolls(false);
+        cpu2_StatusRR.setBorder(null);
         //cpu1_Status.setEnabled(false);
-        jScrollPane2.setViewportView(cpu1_StatusRR);
+        jScrollPane2.setViewportView(cpu2_StatusRR);
 
         table_reportHRRN.setEditable(false);
         table_reportHRRN.setColumns(1);
@@ -137,15 +137,15 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
         lbl_cpu2HRRN.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lbl_cpu2HRRN.setText("CPU1");
 
-        cpu2_StatusHRRN.setEditable(false);
-        cpu2_StatusHRRN.setColumns(20);
-        cpu2_StatusHRRN.setFont(new java.awt.Font("Courier New", 0, 11)); // NOI18N
-        cpu2_StatusHRRN.setLineWrap(true);
-        cpu2_StatusHRRN.setRows(5);
-        cpu2_StatusHRRN.setWrapStyleWord(true);
-        cpu2_StatusHRRN.setAutoscrolls(false);
-        cpu2_StatusHRRN.setBorder(null);
-        jScrollPane5.setViewportView(cpu2_StatusHRRN);
+        cpu1_StatusHRRN.setEditable(false);
+        cpu1_StatusHRRN.setColumns(20);
+        cpu1_StatusHRRN.setFont(new java.awt.Font("Courier New", 0, 11)); // NOI18N
+        cpu1_StatusHRRN.setLineWrap(true);
+        cpu1_StatusHRRN.setRows(5);
+        cpu1_StatusHRRN.setWrapStyleWord(true);
+        cpu1_StatusHRRN.setAutoscrolls(false);
+        cpu1_StatusHRRN.setBorder(null);
+        jScrollPane5.setViewportView(cpu1_StatusHRRN);
 
         lbl_processNameHRRN.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbl_processNameHRRN.setText("Process Name");
@@ -514,8 +514,8 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
     private javax.swing.JLabel averagenTATRR;
     private javax.swing.JToggleButton button_startPause;
     private javax.swing.JButton button_timeunit;
-    private javax.swing.JTextArea cpu1_StatusRR;
-    private javax.swing.JTextArea cpu2_StatusHRRN;
+    private javax.swing.JTextArea cpu1_StatusHRRN;
+    private javax.swing.JTextArea cpu2_StatusRR;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -570,17 +570,19 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
             }
             os.getFutureQueue().dequeue();
         }        
+        
+        // perhaps we should change the nTAT calculation to be curTime unless futureQueue and readyQueue are both empty for each CPU?
+        // then we know it is done running and the nTAT value won't keep decreasing after completing.
             
-        cpu1_StatusRR.setText(this.os.getCPUList().get(1).displayStatus());
-        cpu2_StatusHRRN.setText(this.os.getCPUList().get(0).displayStatus());
-        cpu1_StatusRR.setText(this.os.getCPUList().get(1).displayStatus());
+        cpu2_StatusRR.setText(this.os.getCPUList().get(1).displayStatus());
+        cpu1_StatusHRRN.setText(this.os.getCPUList().get(0).displayStatus());
+        cpu2_StatusRR.setText(this.os.getCPUList().get(1).displayStatus());
         table_readyQueueRR.setText(this.os.getCPUList().get(1).displayQueueState());
         table_readyQueueHRRN.setText(this.os.getCPUList().get(0).displayQueueState());
         table_reportHRRN.setText(this.os.getCPUList().get(0).displayFinished());
         table_reportRR.setText(this.os.getCPUList().get(1).displayFinished());
         averagenTATHRRN.setText(String.format("%.2f",(float)this.os.getCPUList().get(0).getFinishedQueue().size() / this.os.getCurTime()));
         averagenTATRR.setText(String.format("%.2f",(float)this.os.getCPUList().get(1).getFinishedQueue().size() / this.os.getCurTime()));
-        
     }
      
     /**
@@ -593,7 +595,11 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
             this.timeStep();
             try {
                 Thread.sleep((long)(os.getTimeUnitLength()));
-                os.incrementCurTime();
+                
+                if(!this.os.getCPUList().get(0).isFinished() || !this.os.getCPUList().get(1).isFinished() || this.os.getFutureQueue().size() > 0)
+                {
+                    os.incrementCurTime();
+                }
             } 
             catch (InterruptedException ex) {
             // TBD catch and deal with exception ere

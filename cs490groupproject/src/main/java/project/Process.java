@@ -19,6 +19,7 @@ public class Process implements Comparable<Process> {
     private int turnTime;
     private int normalTurnTime;
     private int timeRemaining; // this is the remaining service time, used by the round robin algorithm
+    private double responseRatio = 1.0; //response ratio for current time, calculated every time a process finishes running
 
     
     //basic constructor
@@ -30,6 +31,11 @@ public class Process implements Comparable<Process> {
         this.priority = priority;
         this.timeRemaining = serviceTime;
  
+    }
+    
+    public double getResponseRatio()
+    {
+        return responseRatio;
     }
     
     public int getArrivalTime() {
@@ -92,6 +98,12 @@ public class Process implements Comparable<Process> {
 
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+    
+    public void calculateResponseRatio(int curTime)
+    {
+        int waitTime = curTime - arrivalTime;
+        this.responseRatio = (double)(waitTime + serviceTime)/(double)(serviceTime);
     }
 
     //This is used to display the p

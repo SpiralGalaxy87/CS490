@@ -15,7 +15,7 @@ public class CPU implements Runnable{
     private int curTime;
     private OS o;
     private ProcessQueue readyQueue;
-    private ProcessQueue  finishedQueue;
+    private ProcessQueue finishedQueue;
     private Process curProcess;
     private int timeRemaining;
     private int id;
@@ -37,6 +37,22 @@ public class CPU implements Runnable{
                 return 1;
             }
         }); 
+        }
+        else if (this.id == 1)
+        {
+            this.readyQueue = new ProcessQueue(new Comparator<Process>() {
+                @Override
+                public int compare(Process left, Process right) {
+                    if (left.getResponseRatio() < right.getResponseRatio())
+                    {
+                        return 1;
+                    }
+                    else //if (left.getResponseRatio() >= right.getResponseRatio())
+                    {
+                        return -1;
+                    }
+                }
+            });
         }
         else //for first come first served, use the priority/arrival sorted queue
         {
@@ -76,7 +92,12 @@ public class CPU implements Runnable{
             state += p.getProcessID();
             state += "\t";
             state += p.getServiceTime();
-            state += "\n";
+            if (id == 1)
+            {
+                state += "\t";
+                state += p.getResponseRatio();
+            }
+            state += "\n";            
         }  
         return state;
     }
@@ -120,6 +141,11 @@ public class CPU implements Runnable{
         return status;
     }
     
+    public boolean isFinished()
+    {
+        return (readyQueue.size() == 0 && curProcess == null);
+    }
+    
     public int getID() {
         return id;
     }
@@ -134,6 +160,10 @@ public class CPU implements Runnable{
     public void run(){ 
         if(this.id == 2){
           this.roundRobin();  
+        }
+        else if (this.id == 1)
+        {
+            this.hrrn();
         }
         else{
            this.fcfs(); 
@@ -194,8 +224,7 @@ public class CPU implements Runnable{
                 }
             }
         } 
-    }
-//    
+    } 
     
     public void roundRobin(){
         //While the CPU isn't paused...
@@ -261,5 +290,89 @@ public class CPU implements Runnable{
                 }
             }
         } 
+    }
+    
+    public void hrrn()
+    {
+        //While the CPU isn't paused...
+        //while(!o.getPaused()){
+        while(true){
+            //if the ready queue is not empty, grab it!
+            if (readyQueue.size() > 0) {
+                //if the CPU isn't currently working on a process... grab the next one available.           
+                
+                if(this.timeRemaining <= 0){
+                    //sort queue by popping elements, calling calculateResponseRatio(), and pushing
+
+                    Object[] objectList = readyQueue.toArray();
+                    ProcessQueue tempQueue = new ProcessQueue(new Comparator<Process>() {
+                        @Override
+                        public int compare(Process left, Process right) {
+                            if (left.getResponseRatio() < right.getResponseRatio())
+                            {
+                                return 1;
+                            }
+                            else //if (left.getResponseRatio() >= right.getResponseRatio())
+                            {
+                                return -1;
+                            }
+                        }
+                    });
+                    for (int i = 0; i < objectList.length; i++)
+                    {
+                        Process p = (Process)objectList[i]; 
+                        p.calculateResponseRatio(curTime - 1);
+                        System.out.println("Process " + p.getProcessID() + " response ratio: " + p.getResponseRatio());
+                        tempQueue.enqueue(p);
+                    }
+                    
+                    readyQueue = tempQueue;
+                
+                    this.curProcess = readyQueue.dequeue();
+                    try {
+                        this.timeRemaining = this.curProcess.getServiceTime();
+                        System.out.println("  ...  cpu" + this.id + " thread starting " + this.curProcess.getProcessID() + ", working for " + this.timeRemaining + " time units.");
+                    }
+                    catch(NullPointerException ex) {
+                        
+                    }
+                }
+                //with the process grabbed, sleep for each time unit
+                while(this.timeRemaining > 0){
+                    try {
+                        Thread.sleep((long)(o.getTimeUnitLength()));
+                        this.curTime++;
+                        this.timeRemaining--;
+                    } 
+                    catch (InterruptedException ex) {
+                        return;
+                    }
+                }
+                //once the time remaining has lapsed to zero, set the process' finish time and add to finished list.
+                try {
+                    this.curProcess.setFinishTime(this.curTime - 1);
+                    
+                    //set turnaround time
+                    //set normalized turnaround time: turnaround / service
+                    
+                    finishedQueue.enqueue(this.curProcess);
+                    curProcess = null;
+                }
+                catch(NullPointerException ex) {
+                }
+            }
+            //well, nothing here, so lets wait until there is one there
+            else {
+                try {
+                    Thread.sleep((long)(o.getTimeUnitLength()));
+                    this.curTime++;
+                } 
+                catch (InterruptedException ex) {
+                // TBD catch and deal with exception ere
+                    //System.out.println("Exception caught: " + ex + " with " + this.timeRemaining + " time remaining");
+                    return;
+                }
+            }
+        }
     }
 }
