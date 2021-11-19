@@ -20,7 +20,6 @@ public class CPU{
     private int id;
     private int timeQuantumLength; //used by rr. length of time quantum, set by user.  
     private int quantumRemaining; //used by rr. ammount of time remaining in current quantum.
-    private double averageNTAT;
     
     public CPU(int id, OS o) {
         this.id = id;
@@ -112,7 +111,7 @@ public class CPU{
         if (curProcess != null)
         {
             status += "Exec: Process " + curProcess.getProcessID() + "\n";
-            status += "Time Remaining = " + this.curProcess.getTimeRemaining() + "\n";
+            status += "Time Remaining = " + curProcess.getTimeRemaining() + "\n";
         }
         else
         {
@@ -144,16 +143,16 @@ public class CPU{
         return status;
     }
     
-    public double getAverageNTAT(){
-        averageNTAT=0;
+    public double getSumNTAT(){
+        int sumNTAT=0;
         if (finishedQueue.getProcess() != null)
         {
             for (Process process : finishedQueue.getProcess())
             {
-                averageNTAT+=process.getNormalTurnTime();
+                sumNTAT+=process.getNormalTurnTime();
             }
         }
-        return averageNTAT;
+        return sumNTAT;
     }
     
     public int getID() {
