@@ -21,7 +21,6 @@ public class CPU implements Runnable{
     private int id;
     private int timeQuantumLength; //used by rr. length of time quantum, set by user.  
     private int quantumRemaining; //used by rr. ammount of time remaining in current quantum.
-    private double averageNTAT;
     
     public CPU(int id, OS o) {
         this.curTime = 0;
@@ -150,16 +149,16 @@ public class CPU implements Runnable{
         return status;
     }
     
-    public double getAverageNTAT(){
-        averageNTAT=0;
+    public double getSumNTAT(){
+        int sumNTAT=0;
         if (finishedQueue.getProcess() != null)
         {
             for (Process process : finishedQueue.getProcess())
             {
-                averageNTAT+=process.getNormalTurnTime();
+                sumNTAT+=process.getNormalTurnTime();
             }
         }
-        return averageNTAT;
+        return sumNTAT;
     }
     
     public int getID() {

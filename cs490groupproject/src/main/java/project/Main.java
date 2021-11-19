@@ -48,7 +48,7 @@ public class Main {
         //</editor-fold>
 
         //ProcessQueue processQueue = new ProcessQueue();
-        os = new OS(800);
+        os = new OS(400);
         
         //create CPUs
         CPU cpu1 = new CPU(1, os);
