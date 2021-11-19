@@ -343,11 +343,14 @@ public class CPU implements Runnable{
         //While the CPU isn't paused...
         //while(!o.getPaused()){
         while(true){
+            while(this.futureQueue.size() > 0 && this.futureQueue.peek().getArrivalTime()==this.curTime) {
+                this.readyQueue.enqueue(this.futureQueue.dequeue());
+            } 
             //if the ready queue is not empty, grab it!
             if (readyQueue.size() > 0) {
                 //if the CPU isn't currently working on a process... grab the next one available.           
                 
-                if(this.timeRemaining <= 0){
+                if(this.curProcess == null || this.curProcess.getTimeRemaining() <= 0){
                     //sort queue by popping elements, calling calculateResponseRatio(), and pushing
 
                     Object[] objectList = readyQueue.toArray();
@@ -376,19 +379,18 @@ public class CPU implements Runnable{
                 
                     this.curProcess = readyQueue.dequeue();
                     try {
-                        this.timeRemaining = this.curProcess.getServiceTime();
-                        System.out.println("  ...  cpu" + this.id + " thread starting " + this.curProcess.getProcessID() + ", working for " + this.timeRemaining + " time units.");
+                        System.out.println("  ...  cpu" + this.id + " thread starting " + this.curProcess.getProcessID() + ", working for " + this.curProcess.getTimeRemaining() + " time units.");
                     }
                     catch(NullPointerException ex) {
                         
                     }
                 }
                 //with the process grabbed, sleep for each time unit
-                while(this.timeRemaining > 0){
+                while(this.curProcess.getTimeRemaining() > 0){
                     try {
                         Thread.sleep((long)(o.getTimeUnitLength()));
                         this.curTime++;
-                        this.timeRemaining--;
+                        this.curProcess.setTimeRemaining(this.curProcess.getTimeRemaining() - 1);
                     } 
                     catch (InterruptedException ex) {
                         return;

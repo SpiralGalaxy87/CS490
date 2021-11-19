@@ -1,6 +1,7 @@
 project\GUI_Driver$1.class
 project\GUI_Driver.class
 project\CPU.class
+project\CPU$4.class
 project\GUI_Driver$2.class
 project\OS.class
 project\CPU$3.class
@@ -9,5 +10,6 @@ project\CPU$2.class
 project\Main.class
 project\OS$1.class
 project\ProcessQueue.class
+project\CPU$5.class
 project\CPU$1.class
 project\Process.class
