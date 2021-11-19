@@ -199,15 +199,15 @@ public class CPU implements Runnable{
     
     @Override
     public void run(){ 
-        if(this.id == 2){
-          this.roundRobin();  
+        while(this.futureQueue.size() > 0 && this.futureQueue.peek().getArrivalTime()==this.curTime) {
+            readyQueue.enqueue(this.futureQueue.dequeue());
         }
-        else if (this.id == 1)
+        if(this.id == 2){
+            this.roundRobin();  
+        }
+        else //if (this.id == 1)
         {
             this.hrrn();
-        }
-        else{
-           this.fcfs(); 
         }
     }
     
@@ -340,56 +340,45 @@ public class CPU implements Runnable{
     
     public void hrrn()
     {
-        //While the CPU isn't paused...
-        //while(!o.getPaused()){
         while(true){
-            while(this.futureQueue.size() > 0 && this.futureQueue.peek().getArrivalTime()==this.curTime) {
-                this.readyQueue.enqueue(this.futureQueue.dequeue());
-            } 
-            //if the ready queue is not empty, grab it!
-            if (readyQueue.size() > 0) {
-                //if the CPU isn't currently working on a process... grab the next one available.           
+             
+            if ((curProcess != null && curProcess.getTimeRemaining() <= 0) || curProcess == null) {
                 
-                if(this.curProcess == null || this.curProcess.getTimeRemaining() <= 0){
-                    //sort queue by popping elements, calling calculateResponseRatio(), and pushing
-
-                    Object[] objectList = readyQueue.toArray();
-                    ProcessQueue tempQueue = new ProcessQueue(new Comparator<Process>() {
-                        @Override
-                        public int compare(Process left, Process right) {
-                            if (left.getResponseRatio() < right.getResponseRatio())
-                            {
-                                return 1;
-                            }
-                            else //if (left.getResponseRatio() >= right.getResponseRatio())
-                            {
-                                return -1;
-                            }
+                //if we don't currently have a process...
+                //reorder readyQueue as needed once processes arrive.
+                Object[] objectList = readyQueue.toArray();
+                ProcessQueue tempQueue = new ProcessQueue(new Comparator<Process>() {
+                    @Override
+                    public int compare(Process left, Process right) {
+                        if (left.getResponseRatio() < right.getResponseRatio())
+                        {
+                            return 1;
                         }
-                    });
-                    for (int i = 0; i < objectList.length; i++)
-                    {
-                        Process p = (Process)objectList[i]; 
-                        p.calculateResponseRatio(curTime - 1);
-                        System.out.println("Process " + p.getProcessID() + " response ratio: " + p.getResponseRatio());
-                        tempQueue.enqueue(p);
+                        else //if (left.getResponseRatio() >= right.getResponseRatio())
+                        {
+                            return -1;
+                        }
                     }
-                    
-                    readyQueue = tempQueue;
-                
-                    this.curProcess = readyQueue.dequeue();
-                    try {
-                        System.out.println("  ...  cpu" + this.id + " thread starting " + this.curProcess.getProcessID() + ", working for " + this.curProcess.getTimeRemaining() + " time units.");
-                    }
-                    catch(NullPointerException ex) {
-                        
-                    }
+                });
+
+                for (Object objectList1 : objectList) {
+                    Process p = (Process) objectList1; 
+                    p.calculateResponseRatio(curTime);
+                    //System.out.println("Process " + p.getProcessID() + " response ratio: " + p.getResponseRatio());
+                    tempQueue.enqueue(p);
                 }
+                readyQueue = tempQueue;
+                curProcess = readyQueue.dequeue(); //grab the first process from the ready queue
+                
+                
                 //with the process grabbed, sleep for each time unit
-                while(this.curProcess.getTimeRemaining() > 0){
+                while(curProcess.getTimeRemaining() > 0){
                     try {
                         Thread.sleep((long)(o.getTimeUnitLength()));
                         this.curTime++;
+                        while(this.futureQueue.size() > 0 && this.futureQueue.peek().getArrivalTime()==this.curTime) {
+                            readyQueue.enqueue(this.futureQueue.dequeue());
+                        }
                         this.curProcess.setTimeRemaining(this.curProcess.getTimeRemaining() - 1);
                     } 
                     catch (InterruptedException ex) {
@@ -398,12 +387,8 @@ public class CPU implements Runnable{
                 }
                 //once the time remaining has lapsed to zero, set the process' finish time and add to finished list.
                 try {
-                    this.curProcess.setFinishTime(this.curTime - 1);
-                    
-                    //set turnaround time
-                    //set normalized turnaround time: turnaround / service
-                    
-                    finishedQueue.enqueue(this.curProcess);
+                    curProcess.setFinishTime(curTime);
+                    finishedQueue.enqueue(curProcess);
                     curProcess = null;
                 }
                 catch(NullPointerException ex) {
@@ -414,6 +399,9 @@ public class CPU implements Runnable{
                 try {
                     Thread.sleep((long)(o.getTimeUnitLength()));
                     this.curTime++;
+                    while(this.futureQueue.size() > 0 && this.futureQueue.peek().getArrivalTime()==this.curTime) {
+                        readyQueue.enqueue(this.futureQueue.dequeue());
+                    }
                 } 
                 catch (InterruptedException ex) {
                 // TBD catch and deal with exception ere

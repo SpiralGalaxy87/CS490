@@ -11,5 +11,6 @@ project\Main.class
 project\OS$1.class
 project\ProcessQueue.class
 project\CPU$5.class
+.netbeans_automatic_build
 project\CPU$1.class
 project\Process.class

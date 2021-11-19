@@ -98,11 +98,6 @@ public class Main {
             }
         }
         
-        //test
-        //System.out.println(queue1.display());
-
-       
-        
         gui = new GUI_Driver(os);
         
         gui.setVisible(true);
