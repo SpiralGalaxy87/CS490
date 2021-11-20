@@ -26,7 +26,7 @@ public class CPU extends Thread {
         this.curTime = 0;
         this.id = id;
         this.o = o;
-        this.timeQuantumLength = 2; //later set this with user input;
+        //this.timeQuantumLength = 2; //later set this with user input;
         this.quantumRemaining = this.timeQuantumLength;
         
         switch (this.id) {
@@ -193,6 +193,10 @@ public class CPU extends Thread {
             }
         }
         return sumNTAT;
+    }
+    public void setTimeQuantum(int number){
+        this.timeQuantumLength = number;  
+        System.out.println("Quantum length: " + number + "\n\n");
     }
     
     public boolean isFinished()

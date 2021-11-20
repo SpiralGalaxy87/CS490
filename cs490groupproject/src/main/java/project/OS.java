@@ -78,4 +78,7 @@ public class OS {
     public void setGUI(GUI_Driver gui) {
         this.gui = gui;
     }
+    public void setTimeQuantum(int number){
+        this.cpuList.get(1).setTimeQuantum(number);        
+    }
 }

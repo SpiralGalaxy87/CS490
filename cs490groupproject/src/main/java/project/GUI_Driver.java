@@ -80,6 +80,7 @@ public class GUI_Driver extends javax.swing.JFrame {
         waitingProcessQueueLabelRR = new javax.swing.JLabel();
         lbl_cpuRR1 = new javax.swing.JLabel();
         var_timeSliceRR = new javax.swing.JFormattedTextField();
+        button_timequantum = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(126, 153, 221));
@@ -275,6 +276,13 @@ public class GUI_Driver extends javax.swing.JFrame {
         var_timeSliceRR.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
         var_time.setValue(os.getTimeUnitLength());
 
+        button_timequantum.setText("Update");
+        button_timequantum.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button_timequantumActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -353,7 +361,10 @@ public class GUI_Driver extends javax.swing.JFrame {
                                             .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(var_timeSliceRR, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGroup(layout.createSequentialGroup()
+                                                    .addComponent(var_timeSliceRR, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                    .addComponent(button_timequantum))
                                                 .addComponent(lbl_cpuRR1)
                                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                         .addGroup(layout.createSequentialGroup()
@@ -430,7 +441,9 @@ public class GUI_Driver extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(lbl_cpuRR1, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(var_timeSliceRR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(var_timeSliceRR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(button_timequantum)))
                             .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -475,6 +488,11 @@ public class GUI_Driver extends javax.swing.JFrame {
         int num = ((Number)(var_time.getValue())).intValue();
         os.setTimeUnitLength(num);
     }//GEN-LAST:event_button_timeunitActionPerformed
+
+    private void button_timequantumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_timequantumActionPerformed
+        int num = ((Number)(var_timeSliceRR.getValue())).intValue();
+        os.setTimeQuantum(num);
+    }//GEN-LAST:event_button_timequantumActionPerformed
  
      
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -485,6 +503,7 @@ public class GUI_Driver extends javax.swing.JFrame {
     private javax.swing.JLabel averagenTATHRRN;
     private javax.swing.JLabel averagenTATRR;
     private javax.swing.JToggleButton button_startPause;
+    private javax.swing.JButton button_timequantum;
     private javax.swing.JButton button_timeunit;
     private javax.swing.JTextArea cpu1_StatusHRRN;
     private javax.swing.JTextArea cpu2_StatusRR;
