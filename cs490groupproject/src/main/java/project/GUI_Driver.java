@@ -11,7 +11,7 @@ import javax.swing.*;
  * and open the template in the editor.
  */
 
-public class GUI_Driver extends javax.swing.JFrame implements Runnable {
+public class GUI_Driver extends javax.swing.JFrame {
 
     public static OS os;
     private int timeUnitLength;
@@ -19,13 +19,14 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
     
     /**
      * Creates new form GUI_Driver
+     * @param os Operating System
      */
     public GUI_Driver(OS os) {
-        this.os = os;
+        GUI_Driver.os = os;
         
         //this.timeUnitLength = os.getTimeUnitLength();
         initComponents();
-        this.startGUIUpdater();
+        //this.startGUIUpdater();
     }
 
     /**
@@ -487,10 +488,10 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
     */
     public void startGUIUpdater()
     {
-        Thread t = new Thread(this);    // add start thread for gui updates
-        this.guiUpdateThread = t;
-        t.start();
-        System.out.println("Started the GUI Updater thread");
+        //Thread t = new Thread(this);    // add start thread for gui updates
+        //this.guiUpdateThread = t;
+        //t.start();
+        //System.out.println("Started the GUI Updater thread");
     }
 
     /**
@@ -560,45 +561,47 @@ public class GUI_Driver extends javax.swing.JFrame implements Runnable {
     /**
     * Actions that need to be performed at each time step, including updating all info displays.  
     */ 
-    private void timeStep(){
+    public void update(){
         
         var_curTime.setText(Integer.toString(os.getCPUList().get(0).getCurTime()));
-        //check time, if anything in future queue has this time, move it to the readyQueue
-//        while(os.getFutureQueue().size() > 0 && os.getFutureQueue().peek().getArrivalTime()==os.getCurTime()) {
-//            for (CPU cpu : os.getCPUList()) {
-//                cpu.getReadyQueue().enqueue(os.getFutureQueue().peek());
-//            }
-//            os.getFutureQueue().dequeue();
-//        }        
-            
-        //cpu2_StatusRR.setText(this.os.getCPUList().get(1).displayStatus());
+        cpu2_StatusRR.setText(this.os.getCPUList().get(1).displayStatus());
         cpu1_StatusHRRN.setText(this.os.getCPUList().get(0).displayStatus());
-        //table_readyQueueRR.setText(this.os.getCPUList().get(1).displayQueueState());
+        table_readyQueueRR.setText(this.os.getCPUList().get(1).displayQueueState());
         table_readyQueueHRRN.setText(this.os.getCPUList().get(0).displayQueueState());
         table_reportHRRN.setText(this.os.getCPUList().get(0).displayFinished());
-        //table_reportRR.setText(this.os.getCPUList().get(1).displayFinished());
+        table_reportRR.setText(this.os.getCPUList().get(1).displayFinished());
         averagenTATHRRN.setText(String.format("%.2f",(float)this.os.getCPUList().get(0).getSumNTAT() / (float)this.os.getCPUList().get(0).getFinishedQueue().size()));
-        //averagenTATRR.setText(String.format("%.2f",(float)this.os.getCPUList().get(1).getSumNTAT() / (float)this.os.getCPUList().get(1).getFinishedQueue().size()));
+        averagenTATRR.setText(String.format("%.2f",(float)this.os.getCPUList().get(1).getSumNTAT() / (float)this.os.getCPUList().get(1).getFinishedQueue().size()));
         
+    }
+    public void updateCPU(int id){
+        CPU c = os.getCPUList().get(id-1);
+        if (id == 1) //hrrn
+        {
+            
+            var_curTime.setText(Integer.toString(c.getCurTime()));
+            cpu1_StatusHRRN.setText(c.displayStatus());
+            table_readyQueueHRRN.setText(c.displayQueueState());
+            table_reportHRRN.setText(c.displayFinished());
+            averagenTATHRRN.setText(String.format("%.2f",(float)c.getSumNTAT() / (float)c.getFinishedQueue().size()));
+        }
+        else if (id == 2)
+        {
+            cpu2_StatusRR.setText(c.displayStatus());
+            table_readyQueueRR.setText(c.displayQueueState());
+            table_reportRR.setText(c.displayFinished());
+            averagenTATRR.setText(String.format("%.2f",(float)c.getSumNTAT() / (float)c.getFinishedQueue().size()));
+        }
     }
      
     /**
     * Run timeStep updates once every time step.
     */
     public void run(){
-        System.out.println("  ...  GUI updater thread starting ");
+        //System.out.println("  ...  GUI updater thread starting ");
 
-        while(true){
-            this.timeStep();
-            try {
-                Thread.sleep(10);
-            } 
-            catch (InterruptedException ex) {
-            // TBD catch and deal with exception ere
-                System.out.println("GUI Driver Exception caught: " + ex);
-                //this.timeStep();
-                return;
-            }
-        }
+        //while(true){
+        //    this.update();
+        //}
     }
 }   

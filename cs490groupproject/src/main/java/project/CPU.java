@@ -6,14 +6,12 @@
 package project;
 
 import java.util.Comparator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author Annaleise, Jake, Benjamin
  */
-public class CPU implements Runnable{
+public class CPU extends Thread {
     private int curTime;
     private OS o;
     private ProcessQueue futureQueue;
@@ -31,33 +29,33 @@ public class CPU implements Runnable{
         this.timeQuantumLength = 2; //later set this with user input;
         this.quantumRemaining = this.timeQuantumLength;
         
-        if(this.id == 2){ //for round robin, always insert at the back of the queue
-            this.readyQueue = new ProcessQueue(new Comparator<Process>() {
-                @Override
-                public int compare(Process left, Process right) {
-                    return 1;
-                }
-            }); 
-        }
-        else if (this.id == 1)
-        {
-            this.readyQueue = new ProcessQueue(new Comparator<Process>() {
-                @Override
-                public int compare(Process left, Process right) {
-                    if (left.getResponseRatio() < right.getResponseRatio())
-                    {
+        switch (this.id) {
+            case 1:
+                this.readyQueue = new ProcessQueue(new Comparator<Process>() {
+                    @Override
+                    public int compare(Process left, Process right) {
+                        if (left.getResponseRatio() < right.getResponseRatio())
+                        {
+                            return 1;
+                        }
+                        else //if (left.getResponseRatio() >= right.getResponseRatio())
+                        {
+                            return -1;
+                        }
+                    }
+                }); break;
+            case 2:
+                //for round robin, always insert at the back of the queue
+                this.readyQueue = new ProcessQueue(new Comparator<Process>() {
+                    @Override
+                    public int compare(Process left, Process right) {
                         return 1;
                     }
-                    else //if (left.getResponseRatio() >= right.getResponseRatio())
-                    {
-                        return -1;
-                    }
-                }
-            });
-        }
-        else //for first come first served, use the priority/arrival sorted queue
-        {
-          this.readyQueue = new ProcessQueue();  
+                }); break;
+        //for first come first served, use the priority/arrival sorted queue
+            default:
+                this.readyQueue = new ProcessQueue();
+                break;  
         }
         
         //use the unique constructor to sort by finish time.
@@ -107,15 +105,15 @@ public class CPU implements Runnable{
         return this.curTime;
     }
     
-    public ProcessQueue getFutureQueue(){
+    public synchronized ProcessQueue getFutureQueue(){
         return this.futureQueue;
     }
     
-    public ProcessQueue getFinishedQueue(){
+    public synchronized ProcessQueue getFinishedQueue(){
         
         return this.finishedQueue;
     }
-    public String displayQueueState() {
+    public synchronized String displayQueueState() {
         
         String state = "";
         for (Process p : readyQueue.getProcess())
@@ -123,7 +121,7 @@ public class CPU implements Runnable{
             state += p.getProcessID();
             state += "\t";
             state += p.getServiceTime();
-            if (id == 1)
+            if (id == 1) //hrrn
             {
                 state += "\t";
                 state += p.getResponseRatio();
@@ -134,7 +132,7 @@ public class CPU implements Runnable{
     }
     
     //This is used in the GUI to display the current action of the CPU.
-    public String displayStatus()
+    public synchronized String displayStatus()
     {
         String status = ("CPU " + id) + "\n";
         if (curProcess != null)
@@ -149,7 +147,7 @@ public class CPU implements Runnable{
         return status;
     }
     
-    public String displayFinished(){
+    public synchronized String displayFinished(){
         String status = "";
         if (finishedQueue.getProcess() != null)
         {
@@ -172,7 +170,7 @@ public class CPU implements Runnable{
         return status;
     }
     
-    public double getSumNTAT(){
+    public synchronized double getSumNTAT(){
         int sumNTAT=0;
         if (finishedQueue.getProcess() != null)
         {
@@ -194,20 +192,108 @@ public class CPU implements Runnable{
     }
     //This is what the 'thread' runs.
     
-    public ProcessQueue getReadyQueue(){
+    public synchronized ProcessQueue getReadyQueue(){
         
         return this.readyQueue;
     }
     
     @Override
-    public void run(){ 
-        
-        if(this.id == 2){
-            this.roundRobin();  
-        }
-        else
-        {
-            this.hrrn();
+    public synchronized void run(){ 
+        while(true) {
+            //Check to see if future queue has processes to transfer to readyQueue
+            while(this.futureQueue.size() > 0 && this.futureQueue.peek().getArrivalTime()<=this.curTime) {
+                readyQueue.enqueue(this.futureQueue.dequeue());
+            }
+            if(this.id == 1) //hrrn
+            {
+                //If we do not have a current process and readyQueue is not empty
+                if (curProcess == null && readyQueue.size() != 0) {
+                    //calculate response ratios and rebuild readyqueue
+                    Object[] objectList = readyQueue.toArray();
+                    ProcessQueue tempQueue = new ProcessQueue(new Comparator<Process>() {
+                        @Override
+                        public int compare(Process left, Process right) {
+                            if (left.getResponseRatio() < right.getResponseRatio())
+                            {
+                                return 1;
+                            }
+                            else //if (left.getResponseRatio() >= right.getResponseRatio())
+                            {
+                                return -1;
+                            }
+                        }
+                    });
+                    for (Object objectList1 : objectList) {
+                        Process p = (Process) objectList1; 
+                        p.calculateResponseRatio(curTime);
+                        //System.out.println("Process " + p.getProcessID() + " response ratio: " + p.getResponseRatio());
+                        tempQueue.enqueue(p);
+                    }
+                    readyQueue = tempQueue;
+                    //dequeue one and set as current process
+                    curProcess = readyQueue.dequeue();
+                }
+            }
+            else if (this.id == 2)//round robin
+            {
+                if (curProcess == null && readyQueue.size() != 0) //if there are processes in the queue and we aren't working on one...
+                { 
+                    curProcess = readyQueue.dequeue();
+                    quantumRemaining = Math.min(timeQuantumLength, curProcess.getTimeRemaining());
+                }
+            }
+            //sleep
+            try {
+                Thread.sleep((long)(o.getTimeUnitLength()));
+            } catch (InterruptedException ex) { }
+            //increment time
+            this.curTime++;
+            if(this.id == 1) // hrrn
+            {
+                //if we do have a current process
+                if (curProcess != null){
+                    //decrement timeRemaining
+                    curProcess.setTimeRemaining(curProcess.getTimeRemaining()-1);
+                    //if timeRemaining is now 0 then
+                    if(curProcess.getTimeRemaining() == 0){
+                        //set finished time on current process
+                        curProcess.setFinishTime(curTime);
+                        System.out.println(curProcess.getProcessID() + " finished at time: " + curTime);
+                        //enqueue current process to finishedQueue
+                        finishedQueue.enqueue(curProcess);
+                        //set current process to null
+                        curProcess = null;
+                    }
+                }
+            }
+            else if (this.id == 2) //round robin
+            {
+                //if we do have a current process
+                if (curProcess != null)
+                {
+                    //decrement quantumRemaining.
+                    quantumRemaining--;
+                    //decrement timeRemaining (total)
+                    curProcess.setTimeRemaining(curProcess.getTimeRemaining() - 1);
+                    
+                    //if process finished... set it's finish time.
+                    if(curProcess.getTimeRemaining() == 0)
+                    {
+                        curProcess.setFinishTime(curTime);
+                        finishedQueue.enqueue(curProcess);
+                        curProcess = null;
+                    }
+                    
+                    //if quantumRemaining = 0, return curProcess to back of queue.
+                    if(curProcess != null && quantumRemaining == 0)
+                    {
+                        readyQueue.enqueue(curProcess);
+                        curProcess = null;
+                    }
+                }
+            }
+            //update gui
+            o.getGUI().updateCPU(id);
         }
     }
     

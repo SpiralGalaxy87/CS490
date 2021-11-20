@@ -35,9 +35,7 @@ public class OS {
             return returnVal;
         } 
     };
-    private int curTime;
     //private ProcessQueue readyQueue;
-    private ProcessQueue futureQueue;
     //private ProcessQueue  finishedProcesses;
     private int timeUnitLength;
     private boolean isPaused;
@@ -53,10 +51,9 @@ public class OS {
         //start out paused
         this.isPaused = false;
         //time starts at 0
-        this.curTime = 0;
         
         
-        
+        /*
         //use the unique constructor to sort by arrival time.
         this.futureQueue = new ProcessQueue(new Comparator<Process>() {
             @Override
@@ -77,6 +74,7 @@ public class OS {
                 return returnVal;
             }
         });
+        */
         
     }
     
@@ -92,22 +90,10 @@ public class OS {
         return this.timeUnitLength;
     }
     
-    public int getCurTime(){
-        
-        return this.curTime;
-    }
-
-    
-    public int incrementCurTime(){
-        this.curTime++;
-        
-        return curTime;
-    }
-    
-    public ProcessQueue getFutureQueue(){
-        
-        return this.futureQueue;
-    }
+//    public ProcessQueue getFutureQueue(){
+//        
+//        return this.futureQueue;
+//    }
     
     
     public void addCPU(CPU cpu)
@@ -122,18 +108,16 @@ public class OS {
         //this just starts the single CPU right now. 
         //later this should loop to start up threads for every CPU in cpuList
         for (CPU cpu : cpuList) {
-            Thread t = new Thread(cpu);
-            this.cpuThreadList.add(t);
-            t.start();
+            cpu.start();
             System.out.println("Started thread for CPU " + cpu.getID());
         }
     }
     //this method STOPS the multiple threads running the CPUs.
     public void stopCPUs()
     {
-        for (Thread t : cpuThreadList)
+        for (CPU cpu : cpuList)
         {
-            t.interrupt();
+            cpu.interrupt();
         }
         //this.cpuThread.interrupt();
     }   
