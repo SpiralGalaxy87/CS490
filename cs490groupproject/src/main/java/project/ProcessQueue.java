@@ -57,7 +57,8 @@ public class ProcessQueue {
         return processes.add(p);
     }
     
-    public PriorityQueue<Process> getProcess(){
+    //Returns priority queue of processes
+    public PriorityQueue<Process> getPriorityQueue(){
         
         return this.processes;
     }
@@ -87,32 +88,6 @@ public class ProcessQueue {
         return processes.size();
     }
     
-    /**
-     * Removes a single instance of the specified element from this queue, if it
-     * is present.
-     **/
-    public boolean remove(Process p)
-    {
-        return processes.remove(p);
-    }
-    
-    public void emptyQueue()
-    {
-        for (Process p : processes)
-        {
-            processes.remove(p);
-        }
-    }
-    
-    /**
-     * Returns an array containing all of the elements in this queue, in proper
-     * sequence.
-     **/
-//    public Object[] toArray()
-//    {
-//        return processes.toArray();
-//    }
-    
     /** Returns a string representation of this collection. **/
     public String display()
     {
@@ -124,102 +99,6 @@ public class ProcessQueue {
             output += "\n";
         }
         return output;
-        
-//        Object[] pArray = processes.toArray();
-//        Arrays.sort(pArray, this.comp);
-//        String output = "";
-//        
-//        for(Object obj : pArray)
-//        {
-//            Process p = (Process) obj;
-//            output += p.display();
-//            output += "\n";
-//        }
-//        return output;
     }
 }
-
-////////////////////////
-
-//    /** Atomically removes all of the elements from this queue. **/
-//    public void clear()
-//    {
-//        arrayDeque.clear();
-//    }
-//
-//    /** Returns an iterator over the elements in this queue in proper sequence. **/
-//    public Iterator<E> iterator()
-//    {
-//        return arrayDeque.iterator();
-//    }
-//
-//    
-//
-
-//
-//    /**
-//     * Returns an array containing all of the elements in this queue, in proper
-//     * sequence; the runtime type of the returned array is that of the specified
-//     * array.
-//     **/
-//    public <T> T[] toArray(T[] a)
-//    {
-//        return arrayDeque.toArray(a);
-//    }
-//
-//
-//    /** Inserts the specified element at the front of this deque. **/
-//    public void addFirst(E e)
-//    {
-//        arrayDeque.addFirst(e);
-//    }
-//
-//    /** Inserts the specified element at the end of this deque. **/
-//    public void addLast(E e)
-//    {
-//        arrayDeque.addLast(e);
-//    }
-//
-//    /** Retrieves, but does not remove, the first element of this deque. **/
-//    public void getFirst()
-//    {
-//        arrayDeque.getFirst();
-//    }
-//
-//    /** Retrieves, but does not remove, the last element of this deque. **/
-//    public void getLast()
-//    {
-//        arrayDeque.getLast();
-//    }
-//
-//    /** Inserts the specified element at the front of this deque. **/
-//    public boolean offerFirst(E e)
-//    {
-//        return arrayDeque.offerFirst(e);
-//    }
-//
-//    /** Inserts the specified element at the end of this deque. **/
-//    public boolean offerLast(E e)
-//    {
-//        return arrayDeque.offerLast(e);
-//    }
-//
-//    /**
-//     * Retrieves, but does not remove, the first element of this deque, or
-//     * returns null if this deque is empty.
-//     **/
-//    public E peekFirst()
-//    {
-//        return arrayDeque.peekFirst();
-//    }
-//
-//    /**
-//     * Retrieves, but does not remove, the last element of this deque, or
-//     * returns null if this deque is empty.
-//     **/
-//    public E peekLast()
-//    {
-//        return arrayDeque.peekLast();
-//    }
-//    }
 

@@ -4,7 +4,6 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -477,11 +476,7 @@ public class GUI_Driver extends javax.swing.JFrame {
         os.setTimeUnitLength(num);
     }//GEN-LAST:event_button_timeunitActionPerformed
  
-    
-    
-    //Removed main function
-    //All main functionality in Main class
-
+     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel average_nTATHRRN;
     private javax.swing.JLabel average_nTATRR;

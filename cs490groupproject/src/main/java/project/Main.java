@@ -91,11 +91,11 @@ public class Main {
             //priority
             int priority = lineSc.nextInt();
             
-            Process newProcess = new Process(arrivalTime, processID, serviceTime, priority);
+            Process p1 = new Process(arrivalTime, processID, serviceTime, priority);
+            Process p2 = new Process(arrivalTime, processID, serviceTime, priority);
             
-            for (CPU cpu : os.getCPUList()) {
-                cpu.getFutureQueue().enqueue(newProcess);
-            }
+            cpu1.getFutureQueue().enqueue(p1);
+            cpu2.getFutureQueue().enqueue(p2);
         }
         
         gui = new GUI_Driver(os);

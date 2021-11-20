@@ -14,7 +14,7 @@ import java.util.Comparator;
 public class CPU extends Thread {
     private int curTime;
     private OS o;
-    private ProcessQueue futureQueue;
+    private final ProcessQueue futureQueue;
     private ProcessQueue readyQueue;
     private ProcessQueue finishedQueue;
     private Process curProcess;
@@ -26,7 +26,7 @@ public class CPU extends Thread {
         this.curTime = 0;
         this.id = id;
         this.o = o;
-        this.timeQuantumLength = 4; //later set this with user input;
+        this.timeQuantumLength = 2; //later set this with user input;
         this.quantumRemaining = this.timeQuantumLength;
         
         switch (this.id) {
@@ -118,18 +118,18 @@ public class CPU extends Thread {
         return this.curTime;
     }
     
-    public synchronized ProcessQueue getFutureQueue(){
+    public ProcessQueue getFutureQueue(){
         return this.futureQueue;
     }
     
-    public synchronized ProcessQueue getFinishedQueue(){
-        
+    public ProcessQueue getFinishedQueue(){        
         return this.finishedQueue;
     }
-    public synchronized String displayQueueState() {
+    
+    public String displayQueueState() {
         
         String state = "";
-        for (Process p : readyQueue.getProcess())
+        for (Process p : readyQueue.getPriorityQueue())
         {
             state += p.getProcessID();
             state += "\t";
@@ -145,7 +145,7 @@ public class CPU extends Thread {
     }
     
     //This is used in the GUI to display the current action of the CPU.
-    public synchronized String displayStatus()
+    public String displayStatus()
     {
         String status = ("CPU " + id) + "\n";
         if (curProcess != null)
@@ -160,11 +160,11 @@ public class CPU extends Thread {
         return status;
     }
     
-    public synchronized String displayFinished(){
+    public String displayFinished(){
         String status = "";
-        if (finishedQueue.getProcess() != null)
+        if (finishedQueue.getPriorityQueue() != null)
         {
-            for (Process process : finishedQueue.getProcess())
+            for (Process process : finishedQueue.getPriorityQueue())
             {
                 String line = "";
                 line += String.format("%1$-13s", process.getProcessID());
@@ -183,11 +183,11 @@ public class CPU extends Thread {
         return status;
     }
     
-    public synchronized double getSumNTAT(){
+    public double getSumNTAT(){
         int sumNTAT=0;
-        if (finishedQueue.getProcess() != null)
+        if (finishedQueue.getPriorityQueue() != null)
         {
-            for (Process process : finishedQueue.getProcess())
+            for (Process process : finishedQueue.getPriorityQueue())
             {
                 sumNTAT+=process.getNormalTurnTime();
             }
@@ -203,13 +203,8 @@ public class CPU extends Thread {
     public int getID() {
         return id;
     }
+    
     //This is what the 'thread' runs.
-    
-    public synchronized ProcessQueue getReadyQueue(){
-        
-        return this.readyQueue;
-    }
-    
     @Override
     public void run(){ 
         while(true) {
@@ -226,7 +221,7 @@ public class CPU extends Thread {
                 //If we do not have a current process and readyQueue is not empty
                 if (curProcess == null && readyQueue.size() != 0) {
                     //calculate response ratios and rebuild readyqueue
-                    Object[] objectList = readyQueue.getProcess().toArray();
+                    Object[] objectList = readyQueue.getPriorityQueue().toArray();
                     ProcessQueue tempQueue = new ProcessQueue(new Comparator<Process>() {
                         @Override
                         public int compare(Process left, Process right) {
@@ -461,7 +456,7 @@ public class CPU extends Thread {
 //                //if ready queue is not empty then
 //                if (readyQueue.size() != 0) {
 //                    //calculate response ratios and rebuild readyqueue
-//                    Object[] objectList = readyQueue.getProcess().toArray();
+//                    Object[] objectList = readyQueue.getPriorityQueue().toArray();
 //                    ProcessQueue tempQueue = new ProcessQueue(new Comparator<Process>() {
 //                        @Override
 //                        public int compare(Process left, Process right) {
