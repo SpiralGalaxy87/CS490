@@ -45,6 +45,7 @@ public class CPU extends Thread {
                     }
                 }); break;
             case 2:
+                System.out.println("this is working");
                 //for round robin, always insert at the back of the queue
                 this.readyQueue = new ProcessQueue(new Comparator<Process>() {
                     @Override
@@ -198,18 +199,19 @@ public class CPU extends Thread {
     }
     
     @Override
-    public synchronized void run(){ 
+    public void run(){ 
         while(true) {
             //Check to see if future queue has processes to transfer to readyQueue
             while(this.futureQueue.size() > 0 && this.futureQueue.peek().getArrivalTime()<=this.curTime) {
                 readyQueue.enqueue(this.futureQueue.dequeue());
             }
-            if(this.id == 1) //hrrn
+            System.out.println("Time: " + this.curTime + "\n\n" + this.readyQueue.display());
+            if(this.id == 1)//hrrn
             {
                 //If we do not have a current process and readyQueue is not empty
                 if (curProcess == null && readyQueue.size() != 0) {
                     //calculate response ratios and rebuild readyqueue
-                    Object[] objectList = readyQueue.toArray();
+                    Object[] objectList = readyQueue.getProcess().toArray();
                     ProcessQueue tempQueue = new ProcessQueue(new Comparator<Process>() {
                         @Override
                         public int compare(Process left, Process right) {
@@ -248,6 +250,7 @@ public class CPU extends Thread {
             } catch (InterruptedException ex) { }
             //increment time
             this.curTime++;
+            
             if(this.id == 1) // hrrn
             {
                 //if we do have a current process
@@ -275,6 +278,7 @@ public class CPU extends Thread {
                     quantumRemaining--;
                     //decrement timeRemaining (total)
                     curProcess.setTimeRemaining(curProcess.getTimeRemaining() - 1);
+                    
                     
                     //if process finished... set it's finish time.
                     if(curProcess.getTimeRemaining() == 0)
@@ -437,7 +441,7 @@ public class CPU extends Thread {
                 //if ready queue is not empty then
                 if (readyQueue.size() != 0) {
                     //calculate response ratios and rebuild readyqueue
-                    Object[] objectList = readyQueue.toArray();
+                    Object[] objectList = readyQueue.getProcess().toArray();
                     ProcessQueue tempQueue = new ProcessQueue(new Comparator<Process>() {
                         @Override
                         public int compare(Process left, Process right) {

@@ -109,7 +109,7 @@ public class Process implements Comparable<Process> {
 
     //This is used to display the p
     public String display(){
-        return processID + " Priority: " + priority + ". Arrived at: " + arrivalTime;
+        return processID + " Time Remaining: " + timeRemaining + ". Arrived at: " + arrivalTime;
         //return processID + " arrived at time: " + arrivalTime + " and will execute for: " + serviceTime + " time units. ";
     }
     

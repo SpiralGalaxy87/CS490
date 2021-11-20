@@ -575,7 +575,7 @@ public class GUI_Driver extends javax.swing.JFrame {
         
     }
     public void updateCPU(int id){
-        CPU c = os.getCPUList().get(id-1);
+        CPU c = os.getCPUList().get(id-2);
         if (id == 1) //hrrn
         {
             
@@ -587,6 +587,7 @@ public class GUI_Driver extends javax.swing.JFrame {
         }
         else if (id == 2)
         {
+            var_curTime.setText(Integer.toString(c.getCurTime()));
             cpu2_StatusRR.setText(c.displayStatus());
             table_readyQueueRR.setText(c.displayQueueState());
             table_reportRR.setText(c.displayFinished());
