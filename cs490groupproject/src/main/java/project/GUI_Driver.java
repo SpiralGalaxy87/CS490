@@ -14,8 +14,6 @@ import javax.swing.*;
 public class GUI_Driver extends javax.swing.JFrame {
 
     public static OS os;
-    private int timeUnitLength;
-    private Thread guiUpdateThread;
     
     /**
      * Creates new form GUI_Driver
@@ -23,10 +21,7 @@ public class GUI_Driver extends javax.swing.JFrame {
      */
     public GUI_Driver(OS os) {
         GUI_Driver.os = os;
-        
-        //this.timeUnitLength = os.getTimeUnitLength();
         initComponents();
-        //this.startGUIUpdater();
     }
 
     /**
@@ -481,26 +476,7 @@ public class GUI_Driver extends javax.swing.JFrame {
         int num = ((Number)(var_time.getValue())).intValue();
         os.setTimeUnitLength(num);
     }//GEN-LAST:event_button_timeunitActionPerformed
-
-    
-    /**
-    * Starts thread for GUI Updates when the system starts playing.
-    */
-    public void startGUIUpdater()
-    {
-        //Thread t = new Thread(this);    // add start thread for gui updates
-        //this.guiUpdateThread = t;
-        //t.start();
-        //System.out.println("Started the GUI Updater thread");
-    }
-
-    /**
-    * Interrupt GUI Updater Thread when the system pauses;
-    */
-    public void stopGUIUpdater()
-    {
-        this.guiUpdateThread.interrupt();
-    }   
+ 
     
     
     //Removed main function
@@ -557,29 +533,12 @@ public class GUI_Driver extends javax.swing.JFrame {
     private javax.swing.JLabel waitingProcessQueueLabelRR;
     // End of variables declaration//GEN-END:variables
 
-
-    /**
-    * Actions that need to be performed at each time step, including updating all info displays.  
-    */ 
-    public void update(){
-        
-        var_curTime.setText(Integer.toString(os.getCPUList().get(0).getCurTime()));
-        cpu2_StatusRR.setText(this.os.getCPUList().get(1).displayStatus());
-        cpu1_StatusHRRN.setText(this.os.getCPUList().get(0).displayStatus());
-        table_readyQueueRR.setText(this.os.getCPUList().get(1).displayQueueState());
-        table_readyQueueHRRN.setText(this.os.getCPUList().get(0).displayQueueState());
-        table_reportHRRN.setText(this.os.getCPUList().get(0).displayFinished());
-        table_reportRR.setText(this.os.getCPUList().get(1).displayFinished());
-        averagenTATHRRN.setText(String.format("%.2f",(float)this.os.getCPUList().get(0).getSumNTAT() / (float)this.os.getCPUList().get(0).getFinishedQueue().size()));
-        averagenTATRR.setText(String.format("%.2f",(float)this.os.getCPUList().get(1).getSumNTAT() / (float)this.os.getCPUList().get(1).getFinishedQueue().size()));
-        
-    }
     public void updateCPU(int id){
-        CPU c = os.getCPUList().get(id-2);
+        CPU c = os.getCPUList().get(id-1);
         if (id == 1) //hrrn
         {
             
-            var_curTime.setText(Integer.toString(c.getCurTime()));
+            //var_curTime.setText(Integer.toString(c.getCurTime()));
             cpu1_StatusHRRN.setText(c.displayStatus());
             table_readyQueueHRRN.setText(c.displayQueueState());
             table_reportHRRN.setText(c.displayFinished());
@@ -594,15 +553,5 @@ public class GUI_Driver extends javax.swing.JFrame {
             averagenTATRR.setText(String.format("%.2f",(float)c.getSumNTAT() / (float)c.getFinishedQueue().size()));
         }
     }
-     
-    /**
-    * Run timeStep updates once every time step.
-    */
-    public void run(){
-        //System.out.println("  ...  GUI updater thread starting ");
-
-        //while(true){
-        //    this.update();
-        //}
-    }
+    
 }   

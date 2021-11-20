@@ -51,10 +51,10 @@ public class Main {
         os = new OS(1000);
         
         //create CPUs
-        //CPU cpu1 = new CPU(1, os);
+        CPU cpu1 = new CPU(1, os);
         CPU cpu2 = new CPU(2, os);
         
-        //os.addCPU(cpu1);
+        os.addCPU(cpu1);
         os.addCPU(cpu2);
         
         
