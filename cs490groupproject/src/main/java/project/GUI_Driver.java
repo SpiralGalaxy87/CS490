@@ -274,7 +274,13 @@ public class GUI_Driver extends javax.swing.JFrame {
         lbl_cpuRR1.setText("Round Robin Time Slice Length");
 
         var_timeSliceRR.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
+        var_timeSliceRR.setText("2");
         var_time.setValue(os.getTimeUnitLength());
+        var_timeSliceRR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                var_timeSliceRRActionPerformed(evt);
+            }
+        });
 
         button_timequantum.setText("Update");
         button_timequantum.addActionListener(new java.awt.event.ActionListener() {
@@ -493,6 +499,10 @@ public class GUI_Driver extends javax.swing.JFrame {
         int num = ((Number)(var_timeSliceRR.getValue())).intValue();
         os.setTimeQuantum(num);
     }//GEN-LAST:event_button_timequantumActionPerformed
+
+    private void var_timeSliceRRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_var_timeSliceRRActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_var_timeSliceRRActionPerformed
  
      
     // Variables declaration - do not modify//GEN-BEGIN:variables

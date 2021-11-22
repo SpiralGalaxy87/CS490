@@ -19,7 +19,7 @@ public class CPU extends Thread {
     private ProcessQueue finishedQueue;
     private Process curProcess;
     private int id;
-    private int timeQuantumLength; //used by rr. length of time quantum, set by user.  
+    private int timeQuantumLength=2; //used by rr. length of time quantum, set by user.  
     private int quantumRemaining; //used by rr. ammount of time remaining in current quantum.
     private boolean isPaused = true; // used to pause and play the CPU
     
@@ -219,7 +219,7 @@ public class CPU extends Thread {
         while(true) {
             if(isPaused){
                try {
-                Thread.sleep((long)(500));
+                Thread.sleep((long)(o.getTimeUnitLength()/10));
                 } catch (InterruptedException ex) { } 
             }
             else
