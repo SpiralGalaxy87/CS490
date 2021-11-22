@@ -20,6 +20,7 @@ public class OS {
     private boolean isPaused;
     private GUI_Driver gui;
     private final ArrayList<CPU> cpuList = new ArrayList<>();
+    private boolean firstPlay = true;
 
     public OS(int timeUnitLength) {
         
@@ -45,10 +46,18 @@ public class OS {
     //this method BEGINS the multiple threads needed to run the CPUs.
     public void startCPUs()
     {
+        if(firstPlay) //the first time we press 'play', start the cpu threads.
+            {
+                //loop to start up threads for every CPU in cpuList
+                for (CPU cpu : cpuList) {
+                    cpu.start();
+                    System.out.println("Started thread for CPU " + cpu.getID());
+                }
+                firstPlay = false;
+            }
         //loop to start up threads for every CPU in cpuList
         for (CPU cpu : cpuList) {
-            cpu.start();
-            System.out.println("Started thread for CPU " + cpu.getID());
+            cpu.setIsPaused(false);
         }
     }
     
@@ -57,7 +66,8 @@ public class OS {
     {
         for (CPU cpu : cpuList)
         {
-            cpu.interrupt();
+            //cpu.interrupt();
+            cpu.setIsPaused(true);
         }
     }   
     
